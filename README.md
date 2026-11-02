@@ -3,535 +3,536 @@
 [![CI](https://github.com/kevinrivm/vocero-crm/actions/workflows/ci.yml/badge.svg)](https://github.com/kevinrivm/vocero-crm/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-**El CRM de WhatsApp open source para tu agente de IA, con un Laboratorio que lo pone a prueba.**
+**O CRM de WhatsApp open source para seu agente de IA, com um Laboratório que o põe à prova.**
 
-Vocero es un CRM self-hosted y gratuito para negocios que venden por WhatsApp:
-bandeja en tiempo real, pipeline de ventas, el perfil y el conocimiento de tu
-agente, y un **Laboratorio** donde clientes simulados lo evalúan antes de que
-hable con clientes reales. Una instancia = un negocio, en tu propio servidor,
-con tus datos.
+Vocero é um CRM self-hosted e gratuito para empresas que vendem pelo WhatsApp:
+caixa de entrada em tempo real, pipeline de vendas, perfil e conhecimento do seu
+agente e um **Laboratório** onde clientes simulados o avaliam antes que ele
+converse com clientes reais. Uma instância = uma empresa, no seu próprio servidor,
+com seus dados.
 
-Vocero no trae agente: contesta el que conectas al lado.
-[Nea](https://github.com/kevinrivm/nea-agent) (MIT) es el recomendado y se
-levanta con el mismo `docker compose`; también puedes conectar el tuyo por el
-[contrato público](#-tu-agente-al-lado-del-crm). Sin agente, Vocero es un CRM
-de bandeja manual y contestas tú. El token de WhatsApp nunca sale del CRM.
+Vocero não inclui um agente: quem responde é aquele que você conecta ao lado.
+[Nea](https://github.com/kevinrivm/nea-agent) (MIT) é o recomendado e é iniciado
+com o mesmo `docker compose`; você também pode conectar o seu pelo
+[contrato público](#-tu-agente-al-lado-del-crm). Sem agente, Vocero é um CRM
+com caixa de entrada manual, e você responde. O token do WhatsApp nunca sai do CRM.
 
-![Bandeja de Vocero CRM](docs/screenshots/bandeja.png)
+![Caixa de entrada do Vocero CRM](docs/screenshots/bandeja.png)
 
 <p align="center">
-  <img src="docs/screenshots/laboratorio.png" width="49%" alt="Laboratorio: reporte con score y hallazgos" />
+  <img src="docs/screenshots/laboratorio.png" width="49%" alt="Laboratório: relatório com pontuação e constatações" />
   <img src="docs/screenshots/pipeline.png" width="49%" alt="Pipeline kanban" />
 </p>
 
-> 🎬 **Video-instalador oficial**: próximamente en
-> [el canal de Kevin Belier](https://www.youtube.com/@KevinBelier)
+> 🎬 **Vídeo de instalação oficial**: em breve no
+> [canal de Kevin Belier](https://www.youtube.com/@KevinBelier)
 
-## ¿Para quién es?
+## Para quem é?
 
-- **Agencias de IA/automatización** que implementan CRM + agente para sus
-  clientes: despliegas una instancia por cliente en su VPS (el CRM y Nea, o tu
-  propio agente), la configuras y la entregas con evidencia de calidad (el
-  reporte del Laboratorio).
-- **Negocios** que quieren atender WhatsApp con IA sin regalar sus datos a un
-  SaaS: todo corre en tu servidor.
+- **Agências de IA/automação** que implementam CRM + agente para seus
+  clientes: você implanta uma instância por cliente no VPS dele (o CRM e o Nea, ou seu
+  próprio agente), configura e entrega com evidências de qualidade (o
+  relatório do Laboratório).
+- **Empresas** que querem atender pelo WhatsApp com IA sem entregar seus dados a um
+  SaaS: tudo é executado no seu servidor.
 
-## Features
+## Funcionalidades
 
-### 🧪 Laboratorio: el agente se prueba solo
+### 🧪 Laboratório: o agente se testa sozinho
 
-La pieza estelar. Seis clientes simulados —el comprador decidido, el preguntón
-de precios, el cliente enojado, el que pregunta lo que no sabes, el que exige
-un humano y el que escribe "ke onda si benden pintura"— conversan contra tu
-agente REAL —el que tienes conectado: el CRM le despacha cada mensaje simulado
-como si fuera de un cliente— en un **sandbox que jamás envía mensajes
-reales**. Sin agente conectado, el Laboratorio te dice que lo conectes
-primero. Un juez LLM independiente, con la llave de Ajustes → IA, evalúa cada
-conversación y te entrega:
+A atração principal. Seis clientes simulados —o comprador decidido, o que pergunta
+preços, o cliente irritado, quem pergunta o que você não sabe, quem exige
+falar com uma pessoa e quem escreve "ke onda si benden pintura"— conversam com seu
+agente REAL —aquele que você conectou: o CRM despacha para ele cada mensagem simulada
+como se viesse de um cliente— em um **sandbox que nunca envia mensagens
+reais**. Sem um agente conectado, o Laboratório pede que você o conecte
+primeiro. Um juiz LLM independente, com a chave de Configurações → IA, avalia cada
+conversa e entrega:
 
-- un **score 0–100** de qué tan listo está el agente,
-- **hallazgos con evidencia** (alucinaciones, huecos del conocimiento, fallas
-  de escalado, tono),
-- **sugerencias aplicables con un click** al knowledge base,
-- e **historial con delta**: re-corre después de cada cambio y mira si mejoraste.
+- uma **pontuação de 0–100** sobre o preparo do agente;
+- **constatações com evidências** (alucinações, lacunas de conhecimento, falhas
+  no escalonamento, tom);
+- **sugestões aplicáveis com um clique** à base de conhecimento;
+- e **histórico com delta**: execute novamente após cada alteração e veja se houve melhora.
 
-Deja de "esperar que el bot funcione": mídelo.
+Pare de "esperar que o bot funcione": meça.
 
-### 💬 Bandeja de WhatsApp en tiempo real
+### 💬 Caixa de entrada do WhatsApp em tempo real
 
-Tres columnas (conversaciones / hilo / contacto), mensajes entrantes en ≤2
-segundos sin recargar, estados enviado/entregado/leído, ventana de 24 horas
-visible y bloqueada correctamente (con envío de plantilla aprobada cuando está
-cerrada), respuestas del agente marcadas como IA y handoff a humano con un
-click. Los adjuntos van y vienen (imagen, audio, video, documento, ubicación y
-contacto) con vista previa, y los archivos se guardan en tu propio servidor.
+Três colunas (conversas / conversa / contato), mensagens recebidas em ≤2
+segundos sem recarregar, status enviado/entregue/lido, janela de 24 horas
+visível e bloqueada corretamente (com envio de modelo aprovado quando estiver
+fechada), respostas do agente identificadas como IA e transferência para uma pessoa com um
+clique. Os anexos são enviados e recebidos (imagem, áudio, vídeo, documento, localização e
+contato) com pré-visualização, e os arquivos são armazenados no seu próprio servidor.
 
-Si la conversación empezó en un anuncio Click-to-WhatsApp, la bandeja dice de
-cuál: «Anuncio · titular» en la lista, un filtro «Anuncios», y en el panel del
-contacto el creativo, el texto y el enlace del anuncio. No pide bandera ni
-credenciales: el dato llega en el mismo webhook.
+Se a conversa começou por um anúncio Click-to-WhatsApp, a caixa de entrada informa
+qual: «Anúncio · título» na lista, um filtro «Anúncios» e, no painel do
+contato, a peça criativa, o texto e o link do anúncio. Não exige flag nem
+credenciais: a informação chega no próprio webhook.
 
-En **Contactos** puedes **importar** una lista que ya tengas (un CSV con nombre
-y teléfono con código de país): ves qué va a entrar antes de crear nada, no
-duplica a nadie y no llena tu pipeline. Y puedes marcar contactos **«sin
-agente»** —al importar o uno por uno— para que a tus clientes de siempre los
-atiendas tú: sus mensajes llegan a la bandeja y el agente no les contesta.
+Em **Contatos**, você pode **importar** uma lista existente (um CSV com nome
+e telefone com código do país): veja o que será incluído antes de criar qualquer coisa; ninguém é
+duplicado e seu pipeline não é preenchido. Você também pode marcar contatos como **«sem
+agente»** —ao importar ou um por um— para atender pessoalmente seus clientes habituais:
+as mensagens deles chegam à caixa de entrada e o agente não responde.
 
-Una conversación se puede **eliminar** desde el panel del contacto (lo ve quien
-administra el negocio): se van los mensajes, sus adjuntos y lo que el agente
-aprendió en ella, y el contacto se queda en su etapa salvo que pidas borrarlo
-también. Si la persona vuelve a escribir, el agente empieza de cero.
+Uma conversa pode ser **excluída** no painel do contato (visível para quem
+administra a empresa): as mensagens, os anexos e o que o agente
+aprendeu nela são removidos, e o contato permanece na etapa atual, a menos que você também peça para excluí-lo.
+Se a pessoa voltar a escrever, o agente começa do zero.
 
-### 📊 Contactos y pipeline kanban
+### 📊 Contatos e pipeline kanban
 
-Cada persona que escribe queda registrada sola y entra al pipeline
-(Nuevo → En conversación → Interesado → Cliente → Perdido, editable). Arrastra
-tarjetas, busca, agrega notas, archiva.
+Cada pessoa que escreve é registrada automaticamente e entra no pipeline
+(Novo → Em conversa → Interessado → Cliente → Perdido, editável). Arraste
+cartões, pesquise, adicione notas e arquive.
 
 ### 🎯 Resultados
 
-Una pantalla para la junta del lunes: prospectos nuevos, tratos ganados y
-perdidos, dinero cerrado y el embudo de los que entraron, contra el periodo
-anterior; si el agente contesta, qué tan rápido y cuándo pasa a un humano; de
-qué origen y de qué **anuncio** llegan las conversaciones que terminan en
-venta (con la miniatura del creativo), y qué se está cayendo hoy: leads en
-silencio, mensajes que no llegaron y ventanas de 24 h por cerrarse. Todo sale
-de los datos del propio CRM: no pide conectar nada, y el Laboratorio no cuenta.
-No trae gasto publicitario ni retorno por anuncio, a propósito: ese dato no
-vive en el CRM. Con la agenda encendida suma las citas (realizadas, no
-llegaron, canceladas). Los días se cortan en la zona horaria de la agenda; si
-no hay agenda configurada, en la de Ciudad de México.
+Uma tela para a reunião de segunda-feira: novos leads, negócios ganhos e
+perdidos, valor fechado e o funil de quem chegou, em comparação com o período
+anterior; se o agente responde, com que rapidez e quando transfere para uma pessoa; de
+qual origem e de qual **anúncio** vêm as conversas que terminam em
+venda (com a miniatura da peça criativa); e o que está dando errado hoje: leads
+sem resposta, mensagens que não chegaram e janelas de 24 h prestes a fechar. Tudo vem
+dos dados do próprio CRM: não é preciso conectar nada, e o Laboratório não entra na conta.
+Gastos com anúncios e retorno por anúncio não são incluídos de propósito: esses dados não
+existem no CRM. Com a agenda ativada, soma os agendamentos (realizados, não
+comparecimentos e cancelados). Os dias são definidos pelo fuso horário da agenda; se
+não houver uma agenda configurada, pelo de Cidade do México.
 
-### 🤖 Tu agente, con TU conocimiento
+### 🤖 Seu agente, com o SEU conhecimento
 
-En la pantalla **Agente** configuras nombre, tono, instrucciones y reglas de
-escalado, y le das conocimiento en pares pregunta/respuesta y bloques libres.
-Todo eso vive en el CRM y el agente lo lee de ahí (`GET /api/bot/profile`):
-lo editas en un solo lugar. La llave de IA también: la pegas una vez en
-Ajustes → IA y tu agente piensa **a través del CRM**, sin copiarla a ningún
-otro sitio.
+Na tela **Agente**, você configura nome, tom, instruções e regras de
+escalonamento, e fornece conhecimento em pares de pergunta/resposta e blocos livres.
+Tudo isso fica no CRM, e o agente lê as informações de lá (`GET /api/bot/profile`):
+você edita tudo em um só lugar. O mesmo vale para a chave de IA: cole-a uma vez em
+Configurações → IA, e seu agente raciocina **por meio do CRM**, sem copiá-la para nenhum
+outro lugar.
 
-El interruptor de esa pantalla dice si el CRM le pasa las conversaciones a tu
-agente. Solo se enciende con un agente conectado y en línea; apagado, todo se
-queda en la bandeja para tu equipo.
+O controle nessa tela determina se o CRM encaminha as conversas ao seu
+agente. Só pode ser ativado quando há um agente conectado e on-line; desativado, tudo
+fica na caixa de entrada para sua equipe.
 
-### 🔌 Tu agente al lado del CRM
+<a id="-tu-agente-al-lado-del-crm"></a>
 
-Quien contesta es un servicio aparte, en tu mismo servidor:
-[Nea](https://github.com/kevinrivm/nea-agent) (MIT; entiende audio, imagen y
-PDF, escala a humano, agenda y da seguimiento) o un cerebro tuyo. Se conecta
-con una `BOT_API_KEY` por la API de servicio: tu agente conversa a través del
-CRM, así que **el token de WhatsApp nunca sale de aquí** y todo queda en la
-bandeja como cualquier otra conversación.
+### 🔌 Seu agente ao lado do CRM
 
-Con docker compose, el par se levanta junto (la receta completa, con Coolify,
-está en [`docs/migrar-a-2.0.md`](docs/migrar-a-2.0.md#el-par-crm--nea)):
+Quem responde é um serviço separado, no mesmo servidor:
+[Nea](https://github.com/kevinrivm/nea-agent) (MIT; entende áudio, imagem e
+PDF, transfere para uma pessoa, agenda e faz acompanhamento) ou um cérebro seu. Ele se conecta
+com uma `BOT_API_KEY` pela API de serviço: seu agente conversa por meio do
+CRM, então **o token do WhatsApp nunca sai daqui** e tudo fica na
+caixa de entrada como qualquer outra conversa.
+
+Com docker compose, os dois serviços são iniciados juntos (a receita completa, com Coolify,
+está em [`docs/migrar-a-2.0.md`](docs/migrar-a-2.0.md#el-par-crm--nea)):
 
 ```bash
-# en tu .env: BOT_API_KEY, BRAIN_DISPATCH_URL=http://nea:8000/vocero/dispatch
-# y BRAIN_HEALTH_URL=http://nea:8000/health
+# no seu .env: BOT_API_KEY, BRAIN_DISPATCH_URL=http://nea:8000/vocero/dispatch
+# e BRAIN_HEALTH_URL=http://nea:8000/health
 docker compose up -d
 ```
 
-Mientras se publica la imagen 2.0.0 de Nea, el servicio va detrás del perfil
-`nea`; con el cierre de la 2.0 se levanta siempre.
+Enquanto a imagem 2.0.0 do Nea não é publicada, o serviço fica atrás do perfil
+`nea`; com o lançamento final da versão 2.0, ele será iniciado sempre.
 
-| Endpoint | Para qué |
+| Endpoint | Finalidade |
 |---|---|
-| `GET /api/bot/context` | Quién es la persona, su etapa, si un humano tomó la conversación y si la ventana de 24 h sigue abierta. Con la agenda encendida, también sus citas (`booking`): la próxima, la que ya pasó sin cerrarse y la última que se cerró (cancelada, no asistió o realizada) |
-| `POST /api/bot/messages` | Responder. Sale por el mismo camino que el composer y queda marcado como IA |
-| `GET /api/bot/profile` | El perfil del agente y el knowledge base que editaste en la app; en `llm`, por dónde pensar y con qué modelo (`null` sin IA configurada) |
-| `POST /api/bot/llm/{ruta}` | Pensar con la llave de Ajustes → IA. Compatible con OpenAI: apunta el `base_url` de tu SDK aquí. Acepta `X-API-Key` o `Authorization: Bearer`. Sin IA configurada, 402 `sin_credencial` |
-| `PUT /api/bot/ficha` | Guardar lo que tu bot descubre del lead (claves libres: cada negocio califica distinto) |
-| `POST /api/bot/stage` | Avanzar al lead en el pipeline: solo hacia adelante y a etapas abiertas (las que el contexto trae en `lead.nextStages`). Ganar o perder un trato lo decide una persona. Se apaga desde la pantalla Agente («Mover de etapa») |
-| `POST /api/bot/handoff` | Devolver la conversación a un humano |
-| `POST /api/bot/typing` | Marcar leído y mostrar "escribiendo…" |
-| `GET /api/bot/media/{id}` | Descargar un adjunto entrante sin tocar Meta |
-| `POST /api/bot/reset` | Reiniciar una conversación de pruebas |
-| `GET /api/bot/availability` | Con la agenda encendida: los horarios para ofrecer, que quedan registrados como ofrecidos. Con `date=AAAA-MM-DD`, todas las horas libres de ese día; `query` dice hasta dónde llega lo consultado |
-| `POST` · `PATCH /api/bot/bookings` | Con la agenda encendida: reservar (201) o mover (200) una cita, solo en un horario que se ofreció |
+| `GET /api/bot/context` | Quem é a pessoa, sua etapa, se alguém assumiu a conversa e se a janela de 24 h continua aberta. Com a agenda ativada, também inclui seus agendamentos (`booking`): o próximo, o que já passou sem ser encerrado e o último que foi encerrado (cancelado, não compareceu ou realizado) |
+| `POST /api/bot/messages` | Responder. A resposta segue o mesmo caminho do composer e é identificada como IA |
+| `GET /api/bot/profile` | O perfil do agente e a base de conhecimento editada no app; em `llm`, como raciocinar e com qual modelo (`null` sem IA configurada) |
+| `POST /api/bot/llm/{ruta}` | Raciocinar com a chave de Configurações → IA. Compatível com OpenAI: aponte o `base_url` do seu SDK para cá. Aceita `X-API-Key` ou `Authorization: Bearer`. Sem IA configurada, 402 `sin_credencial` |
+| `PUT /api/bot/ficha` | Salvar o que o bot descobre sobre o lead (chaves livres: cada empresa qualifica de um jeito) |
+| `POST /api/bot/stage` | Avançar o lead no pipeline: somente para frente e para etapas abertas (as que o contexto traz em `lead.nextStages`). Uma pessoa decide se um negócio será ganho ou perdido. Pode ser desativado na tela Agente («Mover de etapa») |
+| `POST /api/bot/handoff` | Devolver a conversa para uma pessoa |
+| `POST /api/bot/typing` | Marcar como lida e mostrar "digitando…" |
+| `GET /api/bot/media/{id}` | Baixar um anexo recebido sem acessar a Meta |
+| `POST /api/bot/reset` | Reiniciar uma conversa de teste |
+| `GET /api/bot/availability` | Com a agenda ativada: horários para oferecer, que ficam registrados como oferecidos. Com `date=AAAA-MM-DD`, todos os horários livres desse dia; `query` informa até onde vai a consulta |
+| `POST` · `PATCH /api/bot/bookings` | Com a agenda ativada: agendar (201) ou alterar (200) um horário, somente se ele tiver sido oferecido |
 
-El contrato completo, con el despacho y el aviso de olvido, está en
-[`docs/openapi.json`](docs/openapi.json) (OpenAPI 3.1) y tu instancia lo sirve
-en `GET /api/bot/openapi.json`. Si vienes de 1.x, la guía es
+O contrato completo, incluindo o despacho e a notificação de esquecimento, está em
+[`docs/openapi.json`](docs/openapi.json) (OpenAPI 3.1), e sua instância o serve
+em `GET /api/bot/openapi.json`. Se você vem da versão 1.x, consulte
 [`docs/migrar-a-2.0.md`](docs/migrar-a-2.0.md).
 
-Los 409 vienen tipados (`ai_paused`, `window_closed`, `sandbox_violation`,
-`message_limit`) para que tu bot sepa si callarse, mandar plantilla o rendirse.
-`message_limit` significa que el canal no admite más mensajes hasta que el
-cliente vuelva a escribir (hoy, el tope de 10 de TikTok): no reintentes. El guion de pruebas
-está en [`tests/e2e/us-bot-api.md`](tests/e2e/us-bot-api.md).
+Os erros 409 são tipados (`ai_paused`, `window_closed`, `sandbox_violation`,
+`message_limit`) para que seu bot saiba se deve parar, enviar um modelo ou desistir.
+`message_limit` significa que o canal não aceita mais mensagens até que o
+cliente volte a escrever (hoje, o limite do TikTok é 10): não tente novamente. O roteiro de testes
+está em [`tests/e2e/us-bot-api.md`](tests/e2e/us-bot-api.md).
 
-La API primero revisa la llave y después cuenta: con la llave buena caben 1200
-llamadas por minuto; sin llave o con una mala, 30 por minuto desde la misma IP
-responden `401` y las siguientes `429` («Demasiados intentos fallidos»). Quien
-inunde la API sin llave no deja a tu bot sin servicio.
+A API verifica a chave antes de contar as chamadas: com a chave correta, são permitidas 1200
+chamadas por minuto; sem chave ou com uma inválida, 30 por minuto do mesmo IP
+respondem `401`, e as seguintes respondem `429` («Muitas tentativas malsucedidas»). Quem
+sobrecarregar a API sem chave não deixa seu bot fora do ar.
 
-**El CRM le pasa cada turno a tu agente (el despacho).** Tu agente no
-necesita recibir el webhook de Meta: con `BRAIN_DISPATCH_URL` (p. ej.
-`http://nea:8000/vocero/dispatch`), la misma `BOT_API_KEY` y el interruptor de
-la pantalla Agente encendido, el mensaje entra primero a la bandeja y el CRM
-le hace a tu agente un `POST` firmado con lo que el cliente escribió desde la
-última respuesta, junto, después de esperar a que termine su ráfaga. Tu agente
-contesta por `POST /api/bot/messages`. Es igual para WhatsApp, Instagram,
-Messenger y TikTok, y no hay secreto de Meta que copiar ni cola de reenvío que
-vigilar. Si tu agente no recibe el turno (tres intentos), la conversación
-queda con una persona y el mensaje sigue en la bandeja. El contrato del evento
-y de la firma está en
+**O CRM encaminha cada turno ao seu agente (o despacho).** Seu agente não
+precisa receber o webhook da Meta: com `BRAIN_DISPATCH_URL` (por exemplo,
+`http://nea:8000/vocero/dispatch`), a mesma `BOT_API_KEY` e o controle da tela
+Agente ativado, a mensagem chega primeiro à caixa de entrada, e o CRM envia ao seu agente um
+`POST` assinado com o que o cliente escreveu desde a última resposta, tudo junto,
+depois de esperar o fim da sequência de mensagens. Seu agente
+responde por `POST /api/bot/messages`. Funciona da mesma forma para WhatsApp, Instagram,
+Messenger e TikTok, sem segredo da Meta para copiar nem fila de reenvio para
+monitorar. Se seu agente não receber o turno (três tentativas), a conversa
+fica com uma pessoa, e a mensagem continua na caixa de entrada. O contrato do evento
+e da assinatura está em
 [`specs/021-despacho-estandar/contracts/despacho.md`](specs/021-despacho-estandar/contracts/despacho.md)
-y su guion en [`tests/e2e/us-despacho.md`](tests/e2e/us-despacho.md).
+e seu roteiro em [`tests/e2e/us-despacho.md`](tests/e2e/us-despacho.md).
 
-Si tu bot recibe los webhooks de Meta por un **override de callback de la
-WABA**, guardar la conexión en Configuración → WhatsApp (o rotar el token) lo
-respeta: Vocero ve el override en `GET /{WABA}/subscribed_apps`, no re-suscribe
-la app —que es justo lo que lo borraría— y tampoco registra su propio webhook
-en el número, porque ese tendría prioridad y dejaría sordo a tu bot. La
-pantalla te dice a qué host se está respetando y, si quieres que los mensajes
-vuelvan al CRM (por ejemplo, al pasar de Nea 1.x al despacho), ofrece
-**Recuperar el webhook**: quita ese override y deja el del número aquí.
+Se seu bot recebe os webhooks da Meta por um **override de callback da
+WABA**, salvar a conexão em Configurações → WhatsApp (ou renovar o token) respeita
+essa configuração: Vocero detecta o override em `GET /{WABA}/subscribed_apps`, não volta a inscrever
+o app —o que o apagaria— e também não registra seu próprio webhook
+no número, pois ele teria prioridade e impediria seu bot de receber mensagens. A
+tela informa qual host está sendo respeitado e, se você quiser que as mensagens
+voltem ao CRM (por exemplo, ao migrar do Nea 1.x para o despacho), oferece
+**Recuperar o webhook**: remove esse override e mantém aqui o webhook do número.
 
-**Tu agente piensa por el CRM.** `POST /api/bot/llm/{ruta}` reenvía la
-llamada tal cual al proveedor de Ajustes → IA con la llave guardada y te
-devuelve su respuesta. La llave no viaja a tu agente: si se filtra el
-servidor de tu agente, no se filtra con ella. Si el proveedor la rechaza (401)
-o se queda sin saldo (402), se pausa en Ajustes → IA y la pantalla lo dice,
-igual que si fallara en el CRM. Nea lo usa solo cuando no le pones
-`LLM_API_KEY`; con ella, piensa con su propio proveedor.
+**Seu agente raciocina pelo CRM.** `POST /api/bot/llm/{ruta}` encaminha a
+chamada sem alterações ao provedor de Configurações → IA usando a chave salva e retorna
+a resposta. A chave não é enviada ao seu agente: se o
+servidor dele for comprometido, a chave não será exposta junto. Se o provedor rejeitar a chave (401)
+ou ficar sem créditos (402), ela será pausada em Configurações → IA, e a tela informará isso,
+assim como quando há uma falha no CRM. O Nea usa esse recurso somente quando você não define
+`LLM_API_KEY`; se definir, ele usa seu próprio provedor.
 
-Arriba de la pantalla **Agente**, la tarjeta **«Quién responde a tus
-clientes»** dice si hay un agente conectado: su última llamada a la API, a
-quién se le despacha, cuándo llegó el último turno y si alguno no llegó, y
-—con `BRAIN_HEALTH_URL`, p. ej. `http://nea:8000/health`— si está en línea,
-su versión y su modo. Sin agente, te dice que Vocero funciona como bandeja
-manual (es un aviso, no un error). Con el agente conectado y el interruptor
-apagado, te avisa que nadie está contestando.
+No topo da tela **Agente**, o cartão **«Quem responde aos seus
+clientes»** informa se há um agente conectado: a última chamada à API, para
+quem os turnos são despachados, quando chegou o último turno e se algum não chegou; e,
+com `BRAIN_HEALTH_URL` (por exemplo, `http://nea:8000/health`), se está on-line,
+sua versão e modo. Sem agente, informa que o Vocero funciona como caixa de entrada
+manual (é um aviso, não um erro). Com o agente conectado e o controle
+desativado, avisa que ninguém está respondendo.
 
-### 📅 Agenda con huecos reales (opcional, apagada por defecto)
+### 📅 Agenda com horários disponíveis reais (opcional, desativada por padrão)
 
-Enciéndela con `AGENDA=on` y el CRM sabe cuándo estás libre: defines tu horario
-en Ajustes → Agenda y tu agente ofrece huecos concretos, reserva el que el
-cliente elige y lo deja registrado junto a su conversación. Dos garantías que
-no se negocian: **solo se reserva un horario que se ofreció** (nada de que el
-modelo invente un martes a las 10) y **nunca se confirma una cita que no se
-creó** — si el hueco se ocupó a media conversación, la respuesta trae
-alternativas frescas en vez de una promesa falsa.
+Ative-a com `AGENDA=on`, e o CRM saberá quando você está disponível: defina seus horários
+em Configurações → Agenda, e seu agente oferece horários específicos, reserva aquele que o
+cliente escolher e o registra junto à conversa. Duas garantias inegociáveis:
+**só é possível reservar um horário que foi oferecido** (nada de o
+modelo inventar uma terça-feira às 10h) e **nunca é confirmado um agendamento que não foi
+criado** — se o horário for ocupado durante a conversa, a resposta traz
+novas alternativas em vez de uma promessa falsa.
 
-Las citas se ven en la pestaña **Citas** como un calendario: Día, Semana, Mes y
-Lista, siempre en la zona horaria del negocio aunque abras el CRM desde otra.
-Tocas una cita y desde su panel abres la conversación, la reprogramas, la
-marcas realizada o «no asistió», o la cancelas; tocas un hueco vacío de la
-rejilla y bloqueas ese horario.
+Os agendamentos aparecem na aba **Agendamentos** como um calendário: Dia, Semana, Mês e
+Lista, sempre no fuso horário da empresa, mesmo que você acesse o CRM de outro local.
+Toque em um agendamento e, no painel, abra a conversa, reagende, marque como realizado ou «não compareceu» ou cancele; toque em um horário vazio da
+grade para bloqueá-lo.
 
-Cómo se entrega la reunión lo eliges tú, con un **conector**:
+Você escolhe como a reunião será realizada, usando um **conector**:
 
-| Conector | Qué hace | Necesita |
+| Conector | O que faz | Requisitos |
 |---|---|---|
-| **Enlace fijo** (default) | Reparte tu sala de siempre | Nada |
-| **Zoom** | Una reunión por cita; mover la mueve, cancelar la borra | Tu app Server-to-Server |
-| **Google Calendar + Meet** | Un evento en tu calendario con su enlace de Meet | Tu app de Google Cloud |
+| **Link fixo** (padrão) | Compartilha sua sala de sempre | Nenhum |
+| **Zoom** | Uma reunião por agendamento; ao reagendar, a reunião é movida; ao cancelar, é excluída | Seu app Server-to-Server |
+| **Google Calendar + Meet** | Um evento no seu calendário com link do Meet | Seu app do Google Cloud |
 
-¿Usas otra cosa? El contrato son cuatro operaciones y está publicado: escribe
-tu conector en tu fork siguiendo
-[`docs/agenda-conectores.md`](docs/agenda-conectores.md). Y si tu proveedor se
-cae, la cita **se agenda igual** con el enlace pendiente de reintentar: un
-tercero caído no te cuesta la conversión.
+Você usa outra ferramenta? O contrato tem quatro operações e é público: escreva
+seu conector no seu fork seguindo
+[`docs/agenda-conectores.md`](docs/agenda-conectores.md). Se o seu provedor falhar,
+o agendamento **é realizado mesmo assim**, com o link pendente de nova tentativa: a indisponibilidade de terceiros não custa uma conversão.
 
-### 📈 Conversiones de anuncios (opcional, apagada por defecto)
+### 📈 Conversões de anúncios (opcional, desativada por padrão)
 
-Si anuncias con **Click-to-WhatsApp**, Meta sabe qué conversaciones empezaron
-desde un anuncio, pero no cuáles sirvieron: sin nadie que se lo diga, optimiza
-hacia el público más barato de hacer escribir, que rara vez es el que compra.
+Se você anuncia com **Click-to-WhatsApp**, a Meta sabe quais conversas começaram
+a partir de um anúncio, mas não quais deram resultado: sem alguém para informar, ela otimiza
+para o público mais barato de fazer escrever, que raramente é quem compra.
 
-Enciéndela con `ATRIBUCION=on`, pega tu dataset en Ajustes → Anuncios (el token
-lo reusa de tu conexión de WhatsApp) y di qué etapa de TU pipeline significa
-"lead calificado". A partir de ahí el CRM le reporta a Meta el lead calificado y
-la venta cerrada —con su importe— por la **Conversions API**, y una tabla de
-actividad te dice qué se envió, con qué acuse y, cuando no salió, por qué.
+Ative-a com `ATRIBUCION=on`, informe seu dataset em Configurações → Anúncios (o token
+é reutilizado da sua conexão do WhatsApp) e indique qual etapa do SEU pipeline significa
+"lead qualificado". A partir daí, o CRM reporta à Meta o lead qualificado e
+a venda fechada —com o respectivo valor— pela **Conversions API**, e uma tabela de
+atividade informa o que foi enviado, qual foi a confirmação e, quando não foi enviado, o motivo.
 
-No se le pide nada al usuario que el CRM ya sepa: la venta cuelga de la etapa
-ganada que ya tienes, y todo se dispara desde la misma puerta que mueve leads,
-así que reporta igual sin importar quién mueva la tarjeta. Si Meta se cae, el lead se mueve igual: una conversión jamás vale un
-movimiento bloqueado. Los gotchas de Meta que cuesta descubrir solo están en
+Não pedimos ao usuário nenhuma informação que o CRM já conheça: a venda depende da etapa
+ganha que você já tem, e tudo é disparado pelo mesmo ponto que move leads,
+então o reporte funciona independentemente de quem mover o cartão. Se a Meta ficar indisponível, o lead ainda muda de etapa: uma conversão nunca justifica bloquear uma
+movimentação. Os detalhes da Meta que são difíceis de descobrir sozinho estão em
 [`docs/atribucion-capi.md`](docs/atribucion-capi.md).
 
-Lo que **no** necesita la bandera: saber de qué anuncio llegó cada
-conversación. La bandeja lo marca («Anuncio · titular», con su filtro) y el
-panel del contacto y el cajón del trato enseñan el creativo, el texto y el
-enlace del anuncio, en cualquier instancia que reciba un clic de un anuncio.
+O que **não** precisa da flag: saber de qual anúncio veio cada
+conversa. A caixa de entrada identifica o anúncio («Anúncio · título», com seu filtro), e o
+painel do contato e o painel do negócio mostram a peça criativa, o texto e o
+link do anúncio em qualquer instância que receba um clique em anúncio.
 
-### 🎨 Tu marca, en claro y en oscuro
+### 🎨 Sua marca, nos temas claro e escuro
 
-En Configuración → Marca le pones al CRM el nombre de tu negocio, su color y su
-logo; el logo se ve en la barra lateral, en el login y en la pestaña del
-navegador. La barra lateral es azul marino en los dos temas, y cada quien
-elige claro u oscuro en su navegador. En oscuro, la página, la barra y lo que
-flota encima se distinguen, y el texto pasa el contraste AA. Con un color
-propio, los tonos derivados y la tinta de los botones se calculan solos para
-que se lean.
+Em Configurações → Marca, você define o nome, a cor e o
+logotipo da sua empresa no CRM; o logotipo aparece na barra lateral, na tela de login e na aba do
+navegador. A barra lateral é azul-marinho nos dois temas, e cada pessoa
+escolhe o tema claro ou escuro no navegador. No tema escuro, a página, a barra e os elementos
+suspensos ficam diferenciados, e o texto atende ao contraste AA. Com uma cor
+personalizada, os tons derivados e a cor dos botões são calculados automaticamente para
+garantir a legibilidade.
 
-### 📱 En el celular, como una app
+### 📱 No celular, como um app
 
-Vocero se instala desde el navegador, sin tiendas y con el nombre y el icono
-de tu negocio:
+Vocero é instalado pelo navegador, sem lojas de apps e com o nome e o ícone
+da sua empresa:
 
-- **Android y computadora (Chrome o Edge)**: en el menú aparece **Instalar
-  app** cuando el navegador lo permite.
-- **iPhone (Safari)**: Compartir → **Agregar a inicio**.
+- **Android e computador (Chrome ou Edge)**: a opção **Instalar
+  app** aparece no menu quando o navegador permite.
+- **iPhone (Safari)**: Compartilhar → **Adicionar à Tela de Início**.
 
-Abre directo en la Bandeja, sin la barra del navegador. Si se va la red, dice
-«Sin conexión» en vez de mostrar conversaciones viejas: no guarda datos de tus
-clientes en el teléfono.
+Abre diretamente na Caixa de entrada, sem a barra do navegador. Se a conexão cair, mostra
+«Sem conexão» em vez de conversas antigas: nenhum dado dos seus
+clientes é armazenado no telefone.
 
-### 📄 Plantillas · 👥 Multi-usuario · 🔐 Self-hosted
+### 📄 Modelos · 👥 Multiusuário · 🔐 Self-hosted
 
-Plantillas con varias variables `{{1}}…{{n}}` y aprobación de Meta
-sincronizada; cuentas de equipo creadas por el propietario (el registro público
-se cierra tras la primera organización); token de WhatsApp cifrado en reposo
+Modelos com várias variáveis `{{1}}…{{n}}` e aprovação da Meta
+sincronizada; contas da equipe criadas pelo proprietário (o registro público
+é fechado após a primeira organização); token do WhatsApp criptografado em repouso
 (AES-256-GCM),
-webhook autenticado en dos capas y cero dependencias de runtime más allá de
-Meta y tu proveedor LLM opcional.
+webhook autenticado em duas camadas e nenhuma dependência de runtime além da
+Meta e do seu provedor LLM opcional.
 
-## Requisitos
+## Pré-requisitos
 
-- Un VPS con Docker (2 GB de RAM bastan para correr la imagen publicada) — con
-  o sin [Coolify](https://coolify.io). La imagen es `linux/amd64`; en un VPS
-  ARM construyes desde el código, que tarda varios minutos y pide más memoria.
-- Un dominio apuntando al VPS (Meta exige **https** para webhooks).
-- Un número de WhatsApp en la Cloud API de Meta (ver [Conexión](#conexión-del-número-de-whatsapp)).
-- Opcional: una API key de [OpenRouter](https://openrouter.ai) (o cualquier
-  proveedor compatible) para tu agente y el juez del Laboratorio.
-- Opcional: un agente al lado del CRM ([Nea](https://github.com/kevinrivm/nea-agent)
-  u otro). Sin él, Vocero funciona como bandeja manual.
+- Um VPS com Docker (2 GB de RAM são suficientes para executar a imagem publicada) — com
+  ou sem [Coolify](https://coolify.io). A imagem é `linux/amd64`; em um VPS
+  ARM, você precisa compilar o código, o que leva vários minutos e exige mais memória.
+- Um domínio apontando para o VPS (a Meta exige **https** para webhooks).
+- Um número de WhatsApp na Cloud API da Meta (consulte [Conexão](#conexión-del-número-de-whatsapp)).
+- Opcional: uma API key da [OpenRouter](https://openrouter.ai) (ou de qualquer
+  provedor compatível) para seu agente e o juiz do Laboratório.
+- Opcional: um agente junto ao CRM ([Nea](https://github.com/kevinrivm/nea-agent)
+  ou outro). Sem ele, o Vocero funciona como caixa de entrada manual.
 
-## Instalación (~15 minutos)
+## Instalação (~15 minutos)
 
-Cada versión se publica como imagen de Docker:
-`ghcr.io/kevinrivm/vocero-crm:<versión>` (p. ej. `2.7.0`). Instalar desde
-la imagen es el camino recomendado: tu servidor la descarga en vez de
-construirla. Construir desde el código sigue funcionando, y es lo que
-necesitas en un VPS ARM o si tu fork cambia el código.
+Cada versão é publicada como imagem Docker:
+`ghcr.io/kevinrivm/vocero-crm:<versión>` (por exemplo, `2.7.0`). A instalação pela
+imagem é o método recomendado: seu servidor faz o download, em vez de compilá-la.
+Compilar a partir do código continua sendo possível e é necessário em um VPS ARM ou se
+seu fork modificar o código.
 
-### 0. Apunta tu dominio
+### 0. Aponte seu domínio
 
-Crea un registro **A** de `crm.tudominio.com` hacia la IP del VPS y espera a
-que resuelva.
+Crie um registro **A** de `crm.tudominio.com` apontando para o IP do VPS e aguarde até
+que seja resolvido.
 
-### Ruta A — Coolify guiado por IA (recomendada)
+### Rota A — Coolify com orientação por IA (recomendada)
 
-Abre tu asistente de IA (p. ej. Claude Code con el MCP de Coolify), pásale el
-archivo [`INSTALL-IA.md`](INSTALL-IA.md) y responde 3 preguntas (dominio, token
-de OpenRouter opcional, ruta). El asistente crea la base de datos y una app de
-tipo «Docker Image» con la imagen de la versión, le monta el volumen de
-`/data`, genera los secretos y verifica el healthcheck. La misma guía trae la
-variante que construye desde el repositorio.
+Abra seu assistente de IA (por exemplo, Claude Code com o MCP do Coolify), forneça o
+arquivo [`INSTALL-IA.md`](INSTALL-IA.md) e responda a 3 perguntas (domínio, token
+opcional da OpenRouter, rota). O assistente cria o banco de dados e um app do
+tipo «Docker Image» com a imagem da versão, monta o volume de
+`/data`, gera os segredos e verifica o healthcheck. O mesmo guia também inclui a
+variante que compila a partir do repositório.
 
-### Ruta B — docker compose
+### Rota B — docker compose
 
 ```bash
 git clone https://github.com/kevinrivm/vocero-crm.git vocero && cd vocero
-pnpm install && pnpm init-env --domain crm.tudominio.com   # crea .env con los secretos ya generados
-pnpm doctor                                                 # revisa el .env antes de arrancar
+pnpm install && pnpm init-env --domain crm.tudominio.com   # cria .env com os segredos já gerados
+pnpm doctor                                                 # verifica o .env antes de iniciar
 docker compose up -d
 ```
 
-`pnpm init-env` crea el `.env` a partir de `.env.example` con todos los
-secretos generados (nunca pisa uno existente); sin `--domain` deja
-`DOMAIN=localhost` para probar en la misma máquina. Necesita Node 22 y pnpm
-(`corepack enable`); sin ellos en el VPS, `cp .env.example .env` y rellena a
-mano (cada variable trae su comando `openssl`). `pnpm doctor` valida las
-variables con el mismo esquema que el arranque, prueba la base de datos, el
-directorio de adjuntos y, si ya hay un número conectado, el token de WhatsApp:
-cada ✗ sale con el comando que la arregla, y nunca imprime un secreto.
+`pnpm init-env` cria o `.env` a partir do `.env.example` com todos os
+segredos gerados (nunca sobrescreve um existente); sem `--domain`, define
+`DOMAIN=localhost` para testar na mesma máquina. É necessário ter Node 22 e pnpm
+(`corepack enable`); se não estiverem no VPS, use `cp .env.example .env` e preencha
+manualmente (cada variável inclui o comando `openssl`). `pnpm doctor` valida as
+variáveis com o mesmo esquema usado na inicialização, testa o banco de dados, o
+diretório de anexos e, se já houver um número conectado, o token do WhatsApp:
+cada ✗ é acompanhado do comando para corrigir o problema, e nenhum segredo é impresso.
 
-`docker-compose.yml` declara las dos cosas: la imagen publicada (`image`) y el
-código (`build: .`). Sin `pull_policy`, la
-[especificación de Compose](https://docs.docker.com/reference/compose-file/build/#using-build-and-image)
-dice qué pasa: intenta primero descargar la imagen y solo la construye desde el
-código si no la encuentra ni en el registro ni en tu máquina. Así que:
+`docker-compose.yml` declara as duas opções: a imagem publicada (`image`) e o
+código (`build: .`). Sem `pull_policy`, a
+[especificação do Compose](https://docs.docker.com/reference/compose-file/build/#using-build-and-image)
+explica o comportamento: primeiro tenta baixar a imagem e só a compila a partir do
+código se não a encontrar no registro nem na sua máquina. Portanto:
 
-- `docker compose up -d` corre la imagen publicada de la versión que fija el
-  compose. Para otra versión publicada, `VOCERO_CRM_VERSION=X.Y.Z` en tu
+- `docker compose up -d` executa a imagem publicada da versão definida no
+  compose. Para usar outra versão publicada, defina `VOCERO_CRM_VERSION=X.Y.Z` no seu
   `.env`.
-- `docker compose up -d --build` la construye desde tu copia del código. Es lo
-  que necesitas en un VPS ARM y en un fork con cambios propios; en el fork,
-  úsalo siempre: lo que construyes queda con el mismo nombre de imagen, y sin
-  `--build` Compose puede correr la oficial en vez de tus cambios.
+- `docker compose up -d --build` compila a imagem a partir da sua cópia do código. É o
+  que você precisa em um VPS ARM e em um fork com alterações próprias; no fork,
+  use sempre essa opção: a imagem compilada mantém o mesmo nome, e sem
+  `--build` o Compose pode executar a imagem oficial em vez das suas alterações.
 
-Caddy emite el certificado HTTPS solo. Verifica con
+Caddy emite o certificado HTTPS automaticamente. Verifique com
 `https://crm.tudominio.com/api/health` → `{"ok":true,"version":"2.7.0",…}`.
 
-### Otras plataformas: Render, Fly y Railway
+### Outras plataformas: Render, Fly e Railway
 
-Hay un manifest por plataforma en la raíz del repo. Los tres corren la misma
-imagen publicada, montan `/data` y vigilan `/api/health`; cada uno declara lo
-que su plataforma le deja declarar y documenta, en comentarios, lo que queda a
-mano. La imagen va fijada a la versión (una prueba lo exige). Verifica igual
-que arriba: `curl -s https://<tu-url>/api/health` →
+Há um manifest para cada plataforma na raiz do repositório. Os três executam a mesma
+imagem publicada, montam `/data` e monitoram `/api/health`; cada um declara o que
+sua plataforma permite e documenta, em comentários, o que precisa ser configurado
+manualmente. A imagem é fixada em uma versão (um teste exige isso). Verifique como
+acima: `curl -s https://<tu-url>/api/health` →
 `{"ok":true,"version":"2.7.0",…,"mediaWritable":true}`.
 
-**Render** — [`render.yaml`](render.yaml) es un Blueprint completo: servicio
-web desde la imagen, base Postgres gestionada, disco de 1 GB en `/data`,
-healthcheck y variables obligatorias; `BETTER_AUTH_SECRET` y `ENCRYPTION_KEY`
-las genera Render (256 bits en base64: justo los 32 bytes que pide la clave)
-y `APP_BASE_URL` sale de la URL `.onrender.com` del servicio. Se aplica con
-**New → Blueprint** sobre tu fork o con el botón de abajo. Queda a mano:
-`META_WEBHOOK_VERIFY_TOKEN` cuando Render lo pida (`openssl rand -hex 32`:
-Render genera base64, con `/`, y el token es un segmento de la URL del
-webhook), el token de OpenRouter y, con dominio propio, `APP_BASE_URL`. El
-disco exige plan de pago (`starter` + `basic-256mb`; la base `free` caduca a
-los 30 días).
+**Render** — [`render.yaml`](render.yaml) é um Blueprint completo: serviço
+web a partir da imagem, banco Postgres gerenciado, disco de 1 GB em `/data`,
+healthcheck e variáveis obrigatórias; o Render gera `BETTER_AUTH_SECRET` e `ENCRYPTION_KEY`
+(256 bits em base64: exatamente os 32 bytes exigidos pela chave), e
+`APP_BASE_URL` é obtida da URL `.onrender.com` do serviço. Aplique usando
+**New → Blueprint** no seu fork ou pelo botão abaixo. Ainda é necessário configurar:
+`META_WEBHOOK_VERIFY_TOKEN` quando o Render solicitar (`openssl rand -hex 32`:
+o Render gera base64, com `/`, e o token é um segmento da URL do
+webhook), o token da OpenRouter e, se usar domínio próprio, `APP_BASE_URL`. O
+disco exige um plano pago (`starter` + `basic-256mb`; o banco `free` expira após
+30 dias).
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/kevinrivm/vocero-crm)
 
-**Fly.io** — [`fly.toml`](fly.toml) declara imagen, volumen `/data`, puerto
-3000, healthcheck, tamaño de máquina y las variables no secretas; Fly no deja
-poner en el archivo ni secretos ni la base. Queda a mano, una vez, con los
-comandos exactos escritos en el propio `fly.toml`: `fly apps create`,
-`fly volumes create`, `fly postgres create` + `fly postgres attach` (deja
-`DATABASE_URL`), `fly secrets set` con los tres secretos y
-`fly deploy --ha=false`. Ese Postgres es el no gestionado (barato; Fly ya no
-lo mantiene): el gestionado es `fly mpg create` + `fly mpg attach`. La máquina
-no se apaga sola a propósito: el despacho a tu agente y el Laboratorio corren
-dentro del proceso.
+**Fly.io** — [`fly.toml`](fly.toml) declara a imagem, o volume `/data`, a porta
+3000, o healthcheck, o tamanho da máquina e as variáveis não secretas; o Fly não permite
+incluir segredos nem o banco no arquivo. É preciso configurar manualmente uma vez, com os
+comandos exatos documentados no próprio `fly.toml`: `fly apps create`,
+`fly volumes create`, `fly postgres create` + `fly postgres attach` (define
+`DATABASE_URL`), `fly secrets set` com os três segredos e
+`fly deploy --ha=false`. Esse Postgres não é gerenciado (é barato; o Fly não
+faz mais a manutenção): o gerenciado é criado com `fly mpg create` + `fly mpg attach`. A máquina
+não é desligada automaticamente de propósito: o despacho para seu agente e o Laboratório são executados
+dentro do processo.
 
-**Railway** — [`railway.toml`](railway.toml) solo puede declarar el build
-(Dockerfile), el healthcheck y la política de reinicio; la base, el volumen,
-el dominio y las variables se crean con la CLI, con los comandos exactos
-escritos en el propio archivo (`railway add --database postgres`,
+**Railway** — [`railway.toml`](railway.toml) só pode declarar o build
+(Dockerfile), o healthcheck e a política de reinicialização; o banco, o volume,
+o domínio e as variáveis são criados pela CLI, com os comandos exatos
+documentados no próprio arquivo (`railway add --database postgres`,
 `railway volume add --mount-path /data`, `railway domain --port 3000`,
-`railway variable set …`, `railway up`). Para la imagen publicada sin build:
-`railway add --image ghcr.io/kevinrivm/vocero-crm:2.7.0`, y entonces el
-healthcheck se fija en el panel. Railway declaró obsoleto este formato a
-favor de su Infrastructure as Code (`.railway/railway.ts`); lo sigue leyendo
-hasta el 2026-12-01.
+`railway variable set …`, `railway up`). Para usar a imagem publicada sem build:
+`railway add --image ghcr.io/kevinrivm/vocero-crm:2.7.0`; nesse caso, o
+healthcheck deve ser definido no painel. O Railway declarou esse formato obsoleto em
+favor do Infrastructure as Code (`.railway/railway.ts`), mas continuará lendo-o
+até 2026-12-01.
 
-### Adjuntos en un bucket (opcional)
+### Anexos em um bucket (opcional)
 
-Por defecto, los adjuntos, el logo y el icono viven en el volumen de `/data`.
-Si tu plataforma no tiene disco persistente, o prefieres guardarlos aparte,
-mándalos a un bucket S3-compatible **tuyo** con `MEDIA_STORE=bucket` y las
-`MEDIA_BUCKET_*` (guía en [`.env.example`](.env.example)):
+Por padrão, os anexos, o logotipo e o ícone ficam no volume `/data`.
+Se sua plataforma não tiver disco persistente, ou se preferir armazená-los separadamente,
+envie-os para um bucket S3-compatible **seu**, usando `MEDIA_STORE=bucket` e as
+variáveis `MEDIA_BUCKET_*` (orientações em [`.env.example`](.env.example)):
 
-- **MinIO en el mismo servidor**: `docker compose --profile bucket up -d`
-  levanta MinIO y crea el bucket; `MEDIA_BUCKET_ENDPOINT=http://minio:9000`.
-- **R2, S3, Backblaze, Tigris…**: su endpoint, su región y una llave con
-  permiso de escritura en el bucket.
+- **MinIO no mesmo servidor**: `docker compose --profile bucket up -d`
+  inicia o MinIO e cria o bucket; `MEDIA_BUCKET_ENDPOINT=http://minio:9000`.
+- **R2, S3, Backblaze, Tigris…**: use o endpoint, a região e uma chave com
+  permissão de gravação no bucket.
 
-Lo nuevo va al bucket y lo que ya estaba en el volumen se sigue leyendo de
-ahí: no hay que migrar nada, y quitar la bandera tampoco deja nada ilegible.
-Si el bucket no acepta una escritura, ese archivo se guarda en el volumen
-(no se pierde) y `/api/health` (`mediaWritable: false`) y `pnpm doctor` lo
-dicen. Vocero firma las peticiones él mismo: no trae el SDK de AWS.
+Os arquivos novos vão para o bucket, e os que já estavam no volume continuam sendo lidos
+de lá: não é preciso migrar nada, e desativar a flag também não torna nenhum arquivo ilegível.
+Se o bucket não aceitar uma gravação, o arquivo será salvo no volume
+(não será perdido), e `/api/health` (`mediaWritable: false`) e `pnpm doctor` informarão o problema.
+O Vocero assina as próprias requisições: não inclui o SDK da AWS.
 
-Vercel y similares siguen fuera: con el bucket ya no dependen del disco, pero
-quedan el trabajo en segundo plano (el despacho, el Laboratorio), el SSE en
-memoria y las migraciones al arrancar.
+Vercel e plataformas semelhantes continuam fora do escopo: com o bucket, já não dependem do disco, mas
+continuam existindo o trabalho em segundo plano (despacho e Laboratório), o SSE em
+memória e as migrações na inicialização.
 
-### Actualizar
+### Atualização
 
-Antes, lee en [`CHANGELOG.md`](CHANGELOG.md) la sección «Actualizar desde…» de
-la versión nueva. Con docker compose: `git pull` y `docker compose up -d` (con
-`--build` si tu fork tiene cambios propios). En Coolify: cambia la etiqueta de
-la imagen a la versión nueva y redespliega; si construyes desde el
-repositorio, redespliega. Con los manifests: cambia la etiqueta de la imagen
-en el archivo (Render sincroniza el Blueprint; Fly, `fly deploy`; Railway
-construye desde el código: `git pull` y `railway up`). Las migraciones corren
-solas al arrancar.
+Antes, leia em [`CHANGELOG.md`](CHANGELOG.md) a seção «Atualizar a partir de…» da
+nova versão. Com docker compose: `git pull` e `docker compose up -d` (com
+`--build` se seu fork tiver alterações próprias). No Coolify: altere a tag da
+imagem para a nova versão e faça o redeploy; se a compilação for feita a partir do
+repositório, faça o redeploy. Com os manifests: altere a tag da imagem
+no arquivo (o Render sincroniza o Blueprint; no Fly, use `fly deploy`; o Railway
+compila a partir do código: `git pull` e `railway up`). As migrações são executadas
+automaticamente na inicialização.
 
-### Primer arranque
+### Primeira inicialização
 
-1. Entra y **regístrate**: el primer registro crea tu organización y cierra el
+1. Acesse e **faça seu cadastro**: o primeiro cadastro cria sua organização e fecha o
    registro público.
-2. Lo primero que ves es la **Guía de inicio**: configura tu agente, vincula
-   tu proveedor de IA, conecta tu número de WhatsApp y, opcional, **conecta tu
-   agente** (Nea u otro; su dirección va en las variables de entorno, el paso
-   te lleva a la receta y se marca solo cuando el agente contesta su
-   `/health`). Con la agenda encendida (`AGENDA=on`), uno más para tus
-   horarios. Cada botón te lleva a la pantalla que toca y al volver ves tu
-   avance; cada paso se marca solo cuando la pieza de verdad funciona. Con un
-   agente conectado aparece **Encender**: hasta entonces nadie le contesta a
-   los clientes y los mensajes que lleguen los atiendes tú desde la Bandeja.
-   Sin agente, la guía te dice que Vocero funciona como bandeja manual.
-3. Mientras falte un paso —o haya un agente conectado y siga apagado—, entrar
-   a la app te lleva a la guía (también está en el menú, solo para el
-   propietario). Si no conectas agente, con los demás pasos listos entras
-   directo a la Bandeja. La guía no encierra a nadie: desde el menú vas a
-   cualquier pantalla en cualquier momento.
-4. Opcional: en la Bandeja, pulsa **"Cargar datos de demostración"** para
-   explorar con la **Ferretería El Martillo** (contactos, conversaciones,
-   pipeline, un knowledge base con huecos a propósito y una corrida de
-   Laboratorio de ejemplo — corre el Laboratorio y mira cómo los encuentra).
-   La demo deja configurado el agente (paso 1 listo); la llave de IA y el
-   número siguen siendo tuyos.
+2. A primeira tela é o **Guia de início**: configure seu agente, vincule
+   seu provedor de IA, conecte seu número do WhatsApp e, opcionalmente, **conecte seu
+   agente** (Nea ou outro; o endereço dele vai nas variáveis de ambiente, e a etapa
+   leva você às instruções e é concluída automaticamente quando o agente responde ao
+   `/health`). Com a agenda ativada (`AGENDA=on`), há mais uma etapa para configurar seus
+   horários. Cada botão leva à tela correspondente, e ao voltar você vê seu
+   progresso; cada etapa só é concluída quando o recurso realmente funciona. Com um
+   agente conectado, aparece a opção **Ativar**: até lá, ninguém responde aos
+   clientes automaticamente, e você atende as mensagens recebidas pela Caixa de entrada.
+   Sem agente, o guia informa que o Vocero funciona como caixa de entrada manual.
+3. Enquanto faltar uma etapa —ou houver um agente conectado, mas desativado—, acessar
+   o app leva ao guia (que também aparece no menu, apenas para o
+   proprietário). Se você não conectar um agente, ao concluir as outras etapas será direcionado
+   diretamente à Caixa de entrada. O guia não impede o acesso: pelo menu, você pode abrir
+   qualquer tela a qualquer momento.
+4. Opcional: na Caixa de entrada, clique em **"Carregar dados de demonstração"** para
+   explorar a **Ferretería El Martillo** (contatos, conversas,
+   pipeline, uma base de conhecimento com lacunas intencionais e uma execução de
+   exemplo do Laboratório — execute-o e veja como as lacunas são encontradas).
+   A demonstração configura o agente (etapa 1 concluída); a chave de IA e o
+   número continuam sendo seus.
 
-## Conexión del número de WhatsApp
+<a id="conexión-del-número-de-whatsapp"></a>
 
-Vocero **consume** un token de la WhatsApp Cloud API — no implementa el
-Embedded Signup. Hay dos formas de obtenerlo:
+## Conexão do número do WhatsApp
 
-### Modo directo (el negocio tiene su propia app de Meta)
+O Vocero **usa** um token da WhatsApp Cloud API — não implementa o
+Embedded Signup. Há duas maneiras de obtê-lo:
 
-> **Atajo: «Conectar con Meta».** Con `META_APP_ID`,
-> `META_EMBEDDED_CONFIG_ID` y `META_APP_SECRET` en la instancia, Ajustes →
-> WhatsApp muestra un botón que abre la ventana oficial de Meta (Embedded
-> Signup v4) y deja el número conectado sin pegar tokens: registra el número y
-> el webhook solo. Qué poner en el panel de Meta (dominios, configuración de
-> login): [docs/embedded-signup.md](docs/embedded-signup.md). Sin esas
-> variables, sigue el alta manual de abajo.
+### Modo direto (a empresa tem seu próprio app da Meta)
 
-1. Crea una app en [developers.facebook.com](https://developers.facebook.com)
-   con el producto WhatsApp y vincula tu número.
-2. Crea un **usuario del sistema** (Business Settings → System users) con
-   acceso a la WABA y genera un token permanente con permisos
-   `whatsapp_business_messaging` y `whatsapp_business_management`.
-3. En Vocero: **Configuración → WhatsApp** → pega WABA ID + Phone Number ID +
-   token → **Probar conexión** → Guardar. Al guardar, Vocero **registra el
-   webhook en Meta por ti** (override a nivel del número, con el handshake
-   incluido) y te lo confirma en pantalla. Si Meta lo rechaza, la conexión
-   queda guardada igual, el aviso dice por qué (casi siempre el token no tiene
-   `whatsapp_business_management`) y el botón **«Registrar en Meta»** de la
-   tarjeta del webhook reintenta sin volver a pegar el token.
-4. Solo si tu app aún no tiene ningún webhook configurado (Vocero te lo
-   avisa): en el panel de Meta (WhatsApp → Configuration → Webhook) pega la
-   **URL del webhook** y el **verify token** que Vocero te muestra, y suscribe
-   el campo `messages` (y `message_template_status_update` si usarás
-   plantillas). Es una sola vez por app.
-5. Recomendado: agrega `META_APP_SECRET` (App Secret de tu app) a las
-   variables de la instancia para la verificación de firma de cada evento.
+> **Atalho: «Conectar com a Meta».** Com `META_APP_ID`,
+> `META_EMBEDDED_CONFIG_ID` e `META_APP_SECRET` na instância, Configurações →
+> WhatsApp mostra um botão que abre a janela oficial da Meta (Embedded
+> Signup v4) e conecta o número sem colar tokens: registra o número e
+> o webhook automaticamente. O que preencher no painel da Meta (domínios, configurações de
+> login): [docs/embedded-signup.md](docs/embedded-signup.md). Sem essas
+> variáveis, siga o cadastro manual abaixo.
 
-### Modo agencia (Tech Provider) — para agencias
+1. Crie um app em [developers.facebook.com](https://developers.facebook.com)
+   com o produto WhatsApp e vincule seu número.
+2. Crie um **usuário do sistema** (Business Settings → System users) com
+   acesso à WABA e gere um token permanente com as permissões
+   `whatsapp_business_messaging` e `whatsapp_business_management`.
+3. No Vocero: **Configurações → WhatsApp** → cole WABA ID + Phone Number ID +
+   token → **Testar conexão** → Salvar. Ao salvar, o Vocero **registra o
+   webhook na Meta para você** (override no nível do número, incluindo o handshake)
+   e confirma na tela. Se a Meta rejeitar, a conexão ainda será salva, e o aviso informa o motivo (quase sempre, o token não tem
+   `whatsapp_business_management`); o botão **«Registrar na Meta»** no
+   cartão do webhook tenta novamente sem que você precise colar o token de novo.
+4. Somente se seu app ainda não tiver nenhum webhook configurado (o Vocero avisará):
+   no painel da Meta (WhatsApp → Configuration → Webhook), cole a
+   **URL do webhook** e o **verify token** exibidos pelo Vocero e inscreva
+   o campo `messages` (e `message_template_status_update` se você usar
+   modelos). Isso só precisa ser feito uma vez por app.
+5. Recomendado: adicione `META_APP_SECRET` (App Secret do seu app) às
+   variáveis da instância para verificar a assinatura de cada evento.
 
-Tu plataforma de agencia ya hace el Embedded Signup y guarda los tokens de tus
-clientes; la instancia de Vocero del cliente solo recibe su token. El webhook
-del cliente se conecta con el **override de callback por WABA**:
+### Modo agência (Tech Provider) — para agências
+
+Sua plataforma de agência já executa o Embedded Signup e armazena os tokens dos seus
+clientes; a instância do Vocero do cliente apenas recebe o token dele. O webhook
+do cliente é conectado com o **override de callback por WABA**:
 
 ```text
-   Meta (WABA del cliente)
+   Meta (WABA do cliente)
         │  webhooks (override_callback_uri)
         ▼
    ┌────────────────────────────┐      ┌─────────────────────────────┐
-   │  Instancia Vocero          │      │  Backend de TU agencia      │
-   │  (VPS del cliente)         │      │  (Embedded Signup + tokens) │
+   │  Instância Vocero          │      │  Backend da SUA agência    │
+   │  (VPS do cliente)          │      │  (Embedded Signup + tokens) │
    │  /api/webhooks/wa/<token>  │      └──────────────┬──────────────┘
    └────────────▲───────────────┘                     │
-                └────── token del cliente ────────────┘
-                        (pegado en el wizard)
+                └────── token do cliente ─────────────┘
+                        (colado no assistente de configuração)
 ```
 
-**Checklist de 5 pasos (el orden importa):**
+**Checklist de 5 etapas (a ordem importa):**
 
-1. **Despliega la instancia primero** (Ruta A o B) — el webhook debe estar en
-   línea para el handshake del paso 3.
-2. **Embedded Signup en TU plataforma**: el cliente conecta su número en tu
-   onboarding y tu backend guarda su token (intercambio de código → token).
-3. **Pega las credenciales en el wizard** de la instancia (WABA ID, Phone
-   Number ID, token) → **Probar conexión** → **GUARDAR**. Al guardar, Vocero
-   **registra el override del callback a nivel del número** hacia la propia
-   instancia (y el webhook enruta cada mensaje por el Phone Number ID
-   guardado). Si tu backend ya enruta esa WABA a otro sitio, Vocero lo respeta
-   y no registra el del número.
-4. **Solo si prefieres enrutar desde tu backend** (o el registro automático
-   falló), configura el override del callback a nivel WABA hacia la instancia:
+1. **Implante primeiro a instância** (Rota A ou B) — o webhook precisa estar
+   on-line para o handshake da etapa 3.
+2. **Embedded Signup na SUA plataforma**: o cliente conecta o número no seu
+   onboarding e seu backend armazena o token dele (troca de código → token).
+3. **Cole as credenciais no assistente de configuração** da instância (WABA ID, Phone
+   Number ID, token) → **Testar conexão** → **SALVAR**. Ao salvar, o Vocero
+   **registra o override do callback no nível do número** apontando para a própria
+   instância (e o webhook encaminha cada mensagem pelo Phone Number ID
+   salvo). Se seu backend já encaminhar essa WABA para outro lugar, o Vocero respeita a configuração
+   e não registra o webhook do número.
+4. **Somente se preferir encaminhar pelo seu backend** (ou se o registro automático
+   falhar), configure o override do callback no nível da WABA apontando para a instância:
 
    ```http
    POST https://graph.facebook.com/v25.0/{WABA_ID_DEL_CLIENTE}/subscribed_apps
@@ -544,276 +545,277 @@ del cliente se conecta con el **override de callback por WABA**:
    }
    ```
 
-   La URL y el verify token exactos están en **Configuración → WhatsApp** de la
-   instancia. Meta hace el handshake en ese momento (la URI debe responder, si
-   no devuelve 422). Volver a guardar la conexión después (p. ej. al rotar el
-   token) respeta este override: Vocero no re-suscribe una WABA que ya lo tiene.
-5. **Registra el número** en la Cloud API si aún no lo está
-   (`POST /{PHONE_NUMBER_ID}/register`) y manda un mensaje de prueba al número:
-   debe aparecer en la bandeja en uno o dos segundos. Los mensajes del cliente
-   llegan directo a SU instancia, no a tu backend.
+   A URL exata e o verify token estão em **Configurações → WhatsApp** na
+   instância. A Meta faz o handshake nesse momento (a URI precisa responder; caso
+   contrário, retorna 422). Salvar novamente a conexão depois (por exemplo, ao renovar o
+   token) respeita esse override: o Vocero não reinscreve uma WABA que já o tenha.
+5. **Registre o número** na Cloud API, se ainda não estiver registrado
+   (`POST /{PHONE_NUMBER_ID}/register`), e envie uma mensagem de teste para o número:
+   ela deve aparecer na caixa de entrada em um ou dois segundos. As mensagens do cliente
+   chegam diretamente à instância DELE, não ao seu backend.
 
-> ⚠️ **Seguridad**: la URL del webhook contiene el verify token como segmento
-> secreto — trátala como una contraseña (no la publiques ni la mandes por
-> canales inseguros). En modo directo puedes añadir la capa extra de firma con
+> ⚠️ **Segurança**: a URL do webhook contém o verify token como segmento
+> secreto — trate-a como uma senha (não a publique nem a envie por
+> canais inseguros). No modo direto, você pode adicionar a camada extra de assinatura com
 > `META_APP_SECRET`.
 >
-> ℹ️ **Limitación conocida de Meta**: los eventos de estado de PLANTILLAS
-> (`message_template_status_update`) no siguen el override de callback — van a
-> la app dueña. Por eso Vocero también **sincroniza plantillas por la API de
-> Graph** (botón "Sincronizar" en Configuración → Plantillas), así el modo
-> agencia ve las aprobaciones igual.
+> ℹ️ **Limitação conhecida da Meta**: os eventos de status dos MODELOS
+> (`message_template_status_update`) não seguem o override de callback — são enviados ao
+> app proprietário. Por isso, o Vocero também **sincroniza modelos pela API do
+> Graph** (botão "Sincronizar" em Configurações → Modelos), para que o modo
+> agência também veja as aprovações.
 
-## Canales opcionales: Instagram, Messenger y TikTok
+## Canais opcionais: Instagram, Messenger e TikTok
 
-WhatsApp es el canal por el que existe Vocero y siempre está encendido. Los
-demás viajan en el mismo código, **apagados por defecto** ([ADR-001](docs/adr-001-canales-opcionales.md)):
-una instancia que no los usa no ve pantallas, webhooks ni variables suyas.
-Se encienden con una variable de despliegue:
+O WhatsApp é o canal que deu origem ao Vocero e está sempre ativado. Os
+demais fazem parte do mesmo código, **desativados por padrão** ([ADR-001](docs/adr-001-canales-opcionales.md)):
+uma instância que não os usa não exibe telas, webhooks nem variáveis relacionadas.
+Eles são ativados por uma variável de implantação:
 
 ```bash
-CHANNELS=whatsapp,instagram,messenger,tiktok   # los que quieras; whatsapp siempre va
+CHANNELS=whatsapp,instagram,messenger,tiktok   # os canais desejados; whatsapp está sempre incluído
 ```
 
-Con más de un canal encendido, la Bandeja enseña el distintivo de cada
-conversación y permite filtrar por canal. El contacto, el pipeline, la ficha
-y el agente son los mismos: un lead es un lead, escriba por donde escriba.
+Com mais de um canal ativado, a Caixa de entrada mostra o identificador de cada
+conversa e permite filtrar por canal. O contato, o pipeline, a ficha
+e o agente são os mesmos: um lead é um lead, independentemente do canal por onde escreva.
 
-Tu agente escribe igual para todos los canales y Vocero lo adapta al salir:
-en Instagram, Messenger y TikTok, que no dibujan las negritas de WhatsApp, su
-texto llega sin asteriscos, con viñetas y con los enlaces legibles.
+Seu agente escreve da mesma forma para todos os canais, e o Vocero adapta o texto ao enviá-lo:
+no Instagram, Messenger e TikTok, que não exibem o negrito do WhatsApp, o
+texto chega sem asteriscos, com marcadores e links legíveis.
 
-**Configuración → Estado** reúne todos los canales encendidos: si están
-conectados, cuándo entró el último mensaje de un cliente y, para los que
-llegan por Zernio, cómo están la cuenta y el webhook. Es el primer sitio que
-mirar cuando «no me llegan los mensajes».
+**Configurações → Status** reúne todos os canais ativados: se estão
+conectados, quando chegou a última mensagem de um cliente e, para os que
+usam Zernio, o status da conta e do webhook. É o primeiro lugar a
+consultar quando «não estou recebendo as mensagens».
 
-### Conectar por Zernio (Instagram, Messenger o TikTok)
+<a id="conectar-por-zernio-instagram-messenger-o-tiktok"></a>
 
-[Zernio](https://zernio.com) es una API unificada: vinculas ahí tus redes, con
-tu propia cuenta, y una sola llave las entrega todas. En Vocero es igual para
-los tres canales:
+### Conectar pelo Zernio (Instagram, Messenger ou TikTok)
 
-1. En Zernio vincula la red (**Accounts → Connect**) y crea una API key
-   (**Settings → API Keys**; empieza con `sk_` y se muestra una sola vez).
-2. En Vocero abre la pantalla del canal, elige *Zernio*, pega la llave y
-   pulsa **Probar y conectar**. Solo el propietario puede hacerlo.
+[Zernio](https://zernio.com) é uma API unificada: você vincula suas redes por lá, com
+sua própria conta, e uma única chave conecta todas elas. No Vocero, o processo é igual para
+os três canais:
 
-No hay que copiar ningún id ni dar de alta nada más en Zernio:
+1. No Zernio, vincule a rede (**Accounts → Connect**) e crie uma API key
+   (**Settings → API Keys**; começa com `sk_` e só é exibida uma vez).
+2. No Vocero, abra a tela do canal, escolha *Zernio*, cole a chave e
+   clique em **Testar e conectar**. Somente o proprietário pode fazer isso.
 
-- **La cuenta la encuentra Vocero** con esa llave. Si la llave tiene varias
-  cuentas de esa red (una agencia), te las ofrece para elegir.
-- **El webhook lo da de alta Vocero** en tu Zernio, con el evento
-  `message.received`, un secreto de firma que él genera y **limitado a tus
-  cuentas conectadas**. Un webhook de Zernio sin ese límite recibe los
-  mensajes de todas las cuentas de la llave. Los demás webhooks que tengas en
-  Zernio no se tocan.
-- Si un día el webhook se desactiva o le falta una cuenta, **Configuración →
-  Estado** lo dice y lo repara con un botón.
+Não é necessário copiar nenhum ID nem cadastrar mais nada no Zernio:
 
-Cada entrega se verifica con la firma de Zernio. Si actualizas desde una
-versión anterior y ya tenías el webhook creado a mano, sigue funcionando: al
-abrir **Estado** verás si le falta algo.
+- **O Vocero encontra a conta** usando essa chave. Se a chave tiver várias
+  contas dessa rede (como em uma agência), ele oferece a lista para você escolher.
+- **O Vocero cadastra o webhook** no seu Zernio, com o evento
+  `message.received`, um segredo de assinatura gerado por ele e **limitado às suas
+  contas conectadas**. Um webhook do Zernio sem esse limite recebe as
+  mensagens de todas as contas associadas à chave. Os outros webhooks que você tiver no
+  Zernio não são alterados.
+- Se um dia o webhook for desativado ou estiver sem alguma conta, **Configurações →
+  Status** informa e corrige o problema com um botão.
 
-### Messenger (página de Facebook)
+Cada entrega é verificada pela assinatura do Zernio. Se você atualizar de uma
+versão anterior e já tiver criado o webhook manualmente, ele continuará funcionando: ao
+abrir **Status**, você verá se falta alguma coisa.
 
-Dos formas de traer los mensajes; se elige en **Configuración → Messenger**.
+### Messenger (página do Facebook)
 
-**Con Zernio**: sigue [Conectar por Zernio](#conectar-por-zernio-instagram-messenger-o-tiktok)
-desde **Configuración → Messenger**. La página y su nombre salen de Zernio.
+Há duas formas de receber mensagens; escolha em **Configurações → Messenger**.
 
-**Con una app propia de Meta**:
+**Com Zernio**: siga [Conectar pelo Zernio](#conectar-por-zernio-instagram-messenger-o-tiktok)
+em **Configurações → Messenger**. A página e seu nome vêm do Zernio.
 
-1. En [developers.facebook.com](https://developers.facebook.com) crea (o usa)
-   una app con el producto **Messenger** y genera el **token de acceso de la
-   página** con el permiso `pages_messaging`. Anota el **ID de la página**.
-2. En Vocero, **Configuración → Messenger**: elige *App propia de Meta*, pega
-   el ID y el token y pulsa *Probar y guardar*.
-3. En la app de Meta, **Messenger → Webhooks**: objeto `page`, campo
-   `messages`, esa URL de callback y el token de verificación que enseña la
-   pantalla. Suscribe la página a la app.
+**Com um app próprio da Meta**:
 
-Desde ese momento, lo que la gente le escribe a la página entra a la bandeja
-como `Messenger`, con el nombre de su perfil, y lo que respondas desde Vocero
-(tú o el agente) llega a su chat. No hay plantillas: pasadas 24 horas del
-último mensaje del cliente ya solo puede contestar una persona, hasta 7 días
-(sale con la etiqueta `HUMAN_AGENT` de Meta); la bandeja lo avisa y dice
-cuánto queda. El agente no contesta fuera de las 24 horas.
-Hoy el canal es de texto: los adjuntos que te manden se ven como
-«📎 Imagen» para que sepas que llegaron, y los adjuntos salientes no están.
+1. Em [developers.facebook.com](https://developers.facebook.com), crie (ou use)
+   um app com o produto **Messenger** e gere o **token de acesso da
+   página** com a permissão `pages_messaging`. Anote o **ID da página**.
+2. No Vocero, em **Configurações → Messenger**, escolha *App próprio da Meta*, cole
+   o ID e o token e clique em *Testar e salvar*.
+3. No app da Meta, em **Messenger → Webhooks**: objeto `page`, campo
+   `messages`, a URL de callback e o token de verificação exibidos na
+   tela. Inscreva a página no app.
 
-Con app propia y sin App Review, la página solo recibe mensajes de cuentas con
-un rol en la app; para atender al público hay que aprobar `pages_messaging`.
-Por Zernio ese trámite ya está resuelto del lado de ellos.
+Desde então, as mensagens enviadas à página entram na caixa de entrada
+como `Messenger`, com o nome do perfil, e as respostas enviadas pelo Vocero
+(por você ou pelo agente) chegam ao chat da pessoa. Não há modelos: após 24 horas da
+última mensagem do cliente, somente uma pessoa pode responder, por até 7 dias
+(com a etiqueta `HUMAN_AGENT` da Meta); a caixa de entrada avisa e informa
+quanto tempo resta. O agente não responde fora das 24 horas.
+Atualmente, o canal aceita apenas texto: os anexos recebidos aparecem como
+«📎 Imagem» para você saber que chegaram; ainda não é possível enviar anexos.
 
-### Instagram (DMs del perfil profesional)
+Com um app próprio e sem App Review, a página só recebe mensagens de contas com
+uma função no app; para atender o público, é preciso aprovar `pages_messaging`.
+Pelo Zernio, essa aprovação já foi resolvida por eles.
 
-Dos formas de traer los mensajes; se elige en **Configuración → Instagram**.
-La cuenta tiene que ser profesional (de empresa o de creador). No necesita una
-página de Facebook vinculada: eso solo lo pide Messenger.
+### Instagram (mensagens diretas do perfil profissional)
 
-**Con Zernio**: sigue [Conectar por Zernio](#conectar-por-zernio-instagram-messenger-o-tiktok).
+Há duas formas de receber mensagens; escolha em **Configurações → Instagram**.
+A conta precisa ser profissional (comercial ou de criador). Não é necessário vincular uma
+página do Facebook: isso só é exigido pelo Messenger.
 
-**Con una app propia de Meta**:
+**Com Zernio**: siga [Conectar pelo Zernio](#conectar-por-zernio-instagram-messenger-o-tiktok).
 
-1. En [developers.facebook.com](https://developers.facebook.com) crea (o usa)
-   una app con el producto **Instagram** y genera el token de la cuenta con
-   los permisos `instagram_business_basic` e
-   `instagram_business_manage_messages`. Anota el **ID de la cuenta**.
-2. En Vocero, **Configuración → Instagram**: elige *App propia de Meta*, pega
-   el ID y el token y pulsa *Probar y guardar*.
-3. En la app de Meta, **Instagram → Webhooks**: objeto `instagram`, campo
-   `messages`, con la URL de callback y el token de verificación que enseña
-   la pantalla.
+**Com um app próprio da Meta**:
 
-A la bandeja entran los mensajes directos; los comentarios de las
-publicaciones no. No hay plantillas: pasadas 24 horas del último mensaje del
-cliente ya solo puede contestar una persona, hasta 7 días (etiqueta
-`HUMAN_AGENT`); el agente no. Sin App Review, una
-app propia solo recibe mensajes de perfiles con un rol en la app. El detalle
-del canal está en [`specs/014-canal-instagram`](specs/014-canal-instagram/spec.md).
+1. Em [developers.facebook.com](https://developers.facebook.com), crie (ou use)
+   um app com o produto **Instagram** e gere o token da conta com
+   as permissões `instagram_business_basic` e
+   `instagram_business_manage_messages`. Anote o **ID da conta**.
+2. No Vocero, em **Configurações → Instagram**, escolha *App próprio da Meta*, cole
+   o ID e o token e clique em *Testar e salvar*.
+3. No app da Meta, em **Instagram → Webhooks**: objeto `instagram`, campo
+   `messages`, com a URL de callback e o token de verificação exibidos
+   na tela.
 
-### TikTok (mensajes directos de una cuenta de negocio)
+As mensagens diretas chegam à caixa de entrada; comentários em
+publicações, não. Não há modelos: após 24 horas da última mensagem do
+cliente, somente uma pessoa pode responder, por até 7 dias (etiqueta
+`HUMAN_AGENT`); o agente não. Sem App Review, um
+app próprio só recebe mensagens de perfis com uma função no app. Os detalhes
+do canal estão em [`specs/014-canal-instagram`](specs/014-canal-instagram/spec.md).
 
-TikTok no entrega mensajes a una app propia: llegan por
-[Zernio](https://zernio.com), con tu cuenta de Zernio.
+### TikTok (mensagens diretas de uma conta comercial)
 
-Sigue [Conectar por Zernio](#conectar-por-zernio-instagram-messenger-o-tiktok)
-desde **Configuración → TikTok**. Si la cuenta es personal, Vocero la conecta
-pero te avisa ahí mismo y en **Estado**: TikTok no le entrega mensajes hasta
-que sea Business.
+O TikTok não entrega mensagens a um app próprio: elas chegam pelo
+[Zernio](https://zernio.com), com sua conta do Zernio.
 
-Lo que TikTok impone, y Vocero te dice antes de que lo descubras con un
-mensaje rechazado:
+Siga [Conectar pelo Zernio](#conectar-por-zernio-instagram-messenger-o-tiktok)
+em **Configurações → TikTok**. Se a conta for pessoal, o Vocero a conecta,
+mas avisa nessa tela e em **Status**: o TikTok não entrega mensagens até que ela seja Business.
 
-- La cuenta tiene que ser **TikTok Business**, registrada fuera de la Unión
-  Europea, Suiza y Reino Unido, con los mensajes directos abiertos.
-- **Tú no inicias**: solo contestas a quien te escribió.
-- Tras el último mensaje del cliente puedes mandar **hasta 10 mensajes, en 48
-  horas**. No hay plantilla que reabra: el undécimo se rechaza (409
-  `message_limit`) hasta que el cliente vuelva a escribir.
-- Cada mensaje es texto, de hasta 6,000 caracteres. Las imágenes entran (como
-  aviso de que llegó una), pero todavía no se envían desde Vocero.
+O que o TikTok exige, e o Vocero informa antes que você descubra por meio de uma
+mensagem rejeitada:
 
-El detalle está en [`specs/022-canal-tiktok`](specs/022-canal-tiktok/spec.md).
+- A conta precisa ser **TikTok Business**, registrada fora da União
+  Europeia, da Suíça e do Reino Unido, com as mensagens diretas ativadas.
+- **Você não inicia a conversa**: só responde a quem escreveu para você.
+- Após a última mensagem do cliente, você pode enviar **até 10 mensagens em 48
+  horas**. Não há modelo para reabrir a conversa: a décima primeira mensagem é rejeitada (409
+  `message_limit`) até que o cliente volte a escrever.
+- Cada mensagem é texto, com até 6.000 caracteres. Imagens são recebidas (como
+  aviso de que chegaram), mas ainda não podem ser enviadas pelo Vocero.
 
-## Configuración de la IA
+Os detalhes estão em [`specs/022-canal-tiktok`](specs/022-canal-tiktok/spec.md).
 
-Con esta llave piensa tu agente (a través del CRM, por `/api/bot/llm`) y el
-juez del Laboratorio. Se pone una vez, en la app: en **Ajustes → IA** eliges
-el proveedor (OpenRouter, o cualquier API compatible con la de OpenAI con su
-base URL), el modelo y pegas
-tu llave. «Probar conexión» hace una llamada mínima con lo escrito antes de
-guardar, «Traer modelos» lista los del proveedor, y la ayuda plegable explica
-dónde se consigue la llave. Se guarda cifrada (AES-256-GCM, la misma
-`ENCRYPTION_KEY` que protege el token de WhatsApp) y la pantalla solo enseña
-sus últimos 4.
+## Configuração da IA
 
-Si el proveedor rechaza la llave (401) o la cuenta se queda sin saldo (402),
-la llave se pausa sola, un banner lo dice en toda la app y Ajustes → IA
-explica cuál de las dos cosas pasó. Guardar una llave nueva —o «Probar
-conexión» con la guardada después de recargar— lo reactiva. Un 429 o un 500
-del proveedor no pausan nada: son hipos, no problemas de la llave.
+Com essa chave, seu agente (pelo CRM, em `/api/bot/llm`) e o
+juiz do Laboratório podem raciocinar. Ela é configurada uma única vez no app: em **Configurações → IA**, escolha
+o provedor (OpenRouter ou qualquer API compatível com a OpenAI, com sua
+base URL), o modelo e cole
+sua chave. «Testar conexão» faz uma chamada mínima com os dados informados antes de
+salvar; «Buscar modelos» lista os modelos do provedor, e a ajuda expansível explica
+onde obter a chave. Ela é armazenada criptografada (AES-256-GCM, a mesma
+`ENCRYPTION_KEY` que protege o token do WhatsApp), e a tela mostra apenas
+os últimos 4 caracteres.
 
-Las variables de entorno siguen valiendo como respaldo (instalaciones
-automatizadas, o quien ya las tenía): se usan mientras no haya nada guardado
-en Ajustes → IA, y lo guardado manda sobre ellas.
+Se o provedor rejeitar a chave (401) ou a conta ficar sem créditos (402),
+a chave será pausada automaticamente; um banner avisará em todo o app, e Configurações → IA
+explicará qual dos problemas ocorreu. Salvar uma nova chave —ou «Testar
+conexão» com a chave salva depois de recarregar a página— reativa-a. Um 429 ou 500
+do provedor não pausa nada: são falhas temporárias, não problemas com a chave.
+
+As variáveis de ambiente continuam servindo como alternativa (para instalações
+automatizadas ou quem já as usava): são utilizadas enquanto não houver nada salvo
+em Configurações → IA, e as configurações salvas têm prioridade sobre elas.
 
 ```bash
-OPENROUTER_API_TOKEN=sk-or-...        # respaldo: tu key
+OPENROUTER_API_TOKEN=sk-or-...        # alternativa: sua chave
 OPENROUTER_MODEL=anthropic/claude-sonnet-4.5
-OPENROUTER_JUDGE_MODEL=               # opcional: modelo distinto para el juez del Laboratorio
-OPENROUTER_BASE_URL=https://openrouter.ai/api   # o tu proveedor OpenAI-compatible
+OPENROUTER_JUDGE_MODEL=               # opcional: modelo diferente para o juiz do Laboratório
+OPENROUTER_BASE_URL=https://openrouter.ai/api   # ou seu provedor compatível com OpenAI
 ```
 
-Sin proveedor, todo lo demás funciona; Agente y Laboratorio enlazan a
-Ajustes → IA. Después configura el comportamiento y el conocimiento en la
-pestaña **Agente**, conecta tu agente y corre el **Laboratorio** antes de
-encenderlo con clientes reales.
+Sem provedor, todo o restante funciona; Agente e Laboratório direcionam para
+Configurações → IA. Depois, configure o comportamento e o conhecimento na
+aba **Agente**, conecte seu agente e execute o **Laboratório** antes de
+ativá-lo com clientes reais.
 
-## Cumplimiento con las políticas de Meta
+## Conformidade com as políticas da Meta
 
-1. **Opt-in**: escribe solo a personas que iniciaron la conversación o
-   aceptaron recibir mensajes; Vocero respeta la ventana de 24 h y bloquea el
-   texto libre fuera de ella.
-2. **Plantillas aprobadas** para reabrir conversaciones: nada de trucos para
-   saltarse la aprobación de Meta.
-3. **El Laboratorio es 100 % interno**: los clientes simulados jamás tocan la
-   API de WhatsApp (bloqueado por diseño y verificado con tests).
-4. **Sin spam ni broadcast**: Vocero no incluye envíos masivos; úsalo para
-   conversaciones reales de venta y soporte.
-5. **Datos del cliente en su servidor**: cada negocio aloja su instancia; el
-   token va cifrado en reposo y los webhooks se validan por URL secreta y
-   firma opcional.
+1. **Opt-in**: escreva somente para pessoas que iniciaram a conversa ou
+   aceitaram receber mensagens; o Vocero respeita a janela de 24 h e bloqueia o
+   texto livre fora dela.
+2. **Modelos aprovados** para reabrir conversas: nada de truques para
+   contornar a aprovação da Meta.
+3. **O Laboratório é 100% interno**: clientes simulados nunca acessam a
+   API do WhatsApp (bloqueado por projeto e verificado por testes).
+4. **Sem spam nem broadcast**: o Vocero não inclui envios em massa; use-o para
+   conversas reais de vendas e suporte.
+5. **Dados do cliente no próprio servidor**: cada empresa hospeda sua instância; o
+   token é criptografado em repouso, e os webhooks são validados por URL secreta e
+   assinatura opcional.
 
-## FAQ de errores comunes
+## Perguntas frequentes sobre erros comuns
 
-**El webhook no se verifica en Meta** — El dominio aún no resuelve, no es
-https, o el token no tiene `whatsapp_business_management`: el aviso al guardar
-trae el motivo tal cual lo dio Meta. Corrige y pulsa **«Registrar en Meta»** en
-Configuración → WhatsApp. Si lo pegas a mano, cópialos exactos de esa misma
-pantalla.
+**O webhook não é verificado pela Meta** — O domínio ainda não foi resolvido, não usa
+https ou o token não tem `whatsapp_business_management`: o aviso exibido ao salvar
+mostra o motivo informado pela Meta. Corrija e clique em **«Registrar na Meta»** em
+Configurações → WhatsApp. Se você fizer isso manualmente, copie os dados exatamente da mesma
+tela.
 
-**El webhook verificó bien pero no llegan mensajes** — Casi siempre: la
-conexión no está GUARDADA en el wizard (el handshake no la necesita, la
-ingesta sí — enruta por el Phone Number ID guardado). Entra a Configuración →
-WhatsApp, guarda la conexión y reenvía un mensaje. Los logs de la instancia
-muestran una advertencia con el Phone Number ID desconocido.
+**O webhook foi verificado, mas as mensagens não chegam** — Quase sempre, a
+conexão não foi SALVA no assistente de configuração (o handshake não precisa dela, mas a
+ingestão sim — o roteamento usa o Phone Number ID salvo). Acesse Configurações →
+WhatsApp, salve a conexão e envie outra mensagem. Os logs da instância
+exibem um aviso com o Phone Number ID desconhecido.
 
-**Llegan mensajes pero no salen** — Revisa el estado de la conexión en
-Configuración → WhatsApp. Si dice "reconectar", el token expiró: pega uno
-nuevo. En modo directo usa un token de usuario del sistema (no expira).
+**As mensagens chegam, mas não são enviadas** — Verifique o status da conexão em
+Configurações → WhatsApp. Se aparecer "reconectar", o token expirou: cole um
+novo. No modo direto, use um token de usuário do sistema (que não expira).
 
-**Error 131030 al enviar** — El número destino no está en la lista de
-permitidos (números de prueba de Meta) o el formato es inválido. Vocero ya
-normaliza los números de México (521 → 52).
+**Erro 131030 ao enviar** — O número de destino não está na lista de
+permitidos (números de teste da Meta) ou o formato é inválido. O Vocero já
+normaliza os números do México (521 → 52).
 
-**El agente no responde** — Vocero no trae agente: ¿hay uno conectado? La
-tarjeta «Quién responde» de la pantalla Agente lo dice (y si su `/health`
-contesta). ¿El interruptor está encendido? ¿Llave de IA vigente en Ajustes →
-IA? ¿La conversación tiene la IA activa y sin handoff? ¿Ventana de 24 h
-abierta? Revisa también los logs de la instancia y los de tu agente.
+**O agente não responde** — O Vocero não inclui um agente: há algum conectado? O
+cartão «Quem responde» na tela Agente informa isso (e se o `/health`
+responde). O controle está ativado? A chave de IA em Configurações →
+IA está válida? A IA está ativada na conversa e não houve handoff? A janela de 24 h
+está aberta? Verifique também os logs da instância e do agente.
 
-**`ENCRYPTION_KEY` inválida al arrancar** — Debe ser exactamente 32 bytes en
+**`ENCRYPTION_KEY` inválida na inicialização** — Deve ter exatamente 32 bytes em
 base64 (44 caracteres): `openssl rand -base64 32`.
 
-**La app arranca pero /api/health falla** — La base de datos no está lista,
-`DATABASE_URL` apunta mal o alguna variable obligatoria no pasa la
-validación (p. ej. una `ENCRYPTION_KEY` mal generada): el healthcheck
-responde 503 en los tres casos. Revisa los logs (`docker compose logs app`); el de arranque nombra la
-variable que falló. Desde el repo, `pnpm doctor` revisa las tres cosas y dice
-cómo arreglar cada una.
+**O app inicia, mas /api/health falha** — O banco de dados não está pronto,
+`DATABASE_URL` está incorreta ou alguma variável obrigatória não passou pela
+validação (por exemplo, uma `ENCRYPTION_KEY` gerada incorretamente): o healthcheck
+retorna 503 nos três casos. Verifique os logs (`docker compose logs app`); os logs de inicialização indicam a
+variável que falhou. No repositório, `pnpm doctor` verifica os três problemas e informa
+como corrigir cada um.
 
-**Subir el logo o el icono da error, o los adjuntos no se ven** — La app no
-puede escribir en `MEDIA_DIR` (`/data/media` en la imagen), y el log de
-arranque lo dice (`[boot] MEDIA_DIR … no es escribible`). Monta un volumen en
-`/data` (el compose ya lo hace; en Coolify, un persistent storage) y no definas
-`MEDIA_DIR` en la plataforma: el contenedor le da el volumen al usuario de la
-app al arrancar.
+**O upload do logotipo ou do ícone apresenta erro, ou os anexos não aparecem** — O app não
+consegue gravar em `MEDIA_DIR` (`/data/media` na imagem), e o log de
+inicialização informa isso (`[boot] MEDIA_DIR … no es escribible`). Monte um volume em
+`/data` (o compose já faz isso; no Coolify, use um persistent storage) e não defina
+`MEDIA_DIR` na plataforma: na inicialização, o contêiner concede o volume ao usuário do
+app.
 
-**Olvidé mi contraseña y no puedo entrar** — Vocero no manda correos (sería una
-dependencia externa) y el registro público se cierra con la primera
-organización, así que no hay flujo de "olvidé mi contraseña". La salida es
-reescribir el hash en la base:
+**Esqueci minha senha e não consigo entrar** — O Vocero não envia e-mails (isso seria uma
+dependência externa) e o registro público é fechado quando a primeira
+organização é criada, então não há fluxo de "esqueci minha senha". A solução é
+reescrever o hash no banco:
 
 ```bash
 NEW_PASSWORD='tu-contraseña-nueva' node scripts/reset-password.mjs tu@correo.com
 ```
 
-El script **no toca la base**: te imprime el `UPDATE` para que lo pegues tú en
-la consola de Postgres. Corre desde tu máquina, con el repo clonado y
-`pnpm install` hecho — la contraseña nueva nunca sale de ahí. Va por variable de
-entorno y no por argumento porque un argumento queda en el historial del shell
-y se ve en `ps`.
+O script **não acessa o banco**: ele imprime o `UPDATE` para você colar no
+console do Postgres. Execute na sua máquina, com o repositório clonado e
+`pnpm install` concluído — a nova senha nunca sai dela. A senha é fornecida por variável de
+ambiente e não como argumento porque um argumento fica no histórico do shell
+e pode ser visto em `ps`.
 
-Debe responder `UPDATE 1`. Si responde `UPDATE 0`, el correo no coincide;
-míralos con `SELECT email FROM "user";`.
+O resultado deve ser `UPDATE 1`. Se retornar `UPDATE 0`, o e-mail não corresponde;
+verifique com `SELECT email FROM "user";`.
 
-## Versiones
+## Versões
 
-La versión que está corriendo se ve **abajo en la barra lateral** (`v1.1.0 ·
-8e62d0b`) y en el healthcheck, para poder confirmar un despliegue con un
-`curl` sin abrir la app:
+A versão em execução aparece **na parte inferior da barra lateral** (`v1.1.0 ·
+8e62d0b`) e no healthcheck, permitindo confirmar uma implantação com um
+`curl` sem abrir o app:
 
 ```bash
 curl -s https://crm.tudominio.com/api/health
@@ -822,109 +824,109 @@ curl -s https://crm.tudominio.com/api/health
 #  "mediaWritable":true}
 ```
 
-`features` dice qué banderas de despliegue están encendidas en esta instancia
-(`AGENDA`, `CHANNELS`, `ATRIBUCION`): es la forma de confirmar que la variable
-llegó al contenedor sin iniciar sesión. `mediaWritable` dice si `MEDIA_DIR`
-(el volumen `/data`) se puede escribir; con `false` el CRM sigue respondiendo
-`ok` (funciona sin adjuntos), pero el logo, el icono y los adjuntos no se van
-a guardar: revisa el volumen. Ese sondeo escribe de verdad y se recuerda un
-minuto, así que el healthcheck no toca el disco en cada llamada.
+`features` informa quais flags de implantação estão ativadas nesta instância
+(`AGENDA`, `CHANNELS`, `ATRIBUCION`): é uma forma de confirmar que a variável
+chegou ao contêiner sem iniciar uma sessão. `mediaWritable` informa se é possível gravar em `MEDIA_DIR`
+(o volume `/data`); com `false`, o CRM continua respondendo
+`ok` (funciona sem anexos), mas o logotipo, o ícone e os anexos não serão
+salvos: verifique o volume. Essa sondagem realmente grava dados, e seu resultado fica em cache por
+um minuto, para que o healthcheck não acesse o disco a cada chamada.
 
-La versión sale de `package.json` y se congela al **construir**. El commit,
-solo si llega **al build**. La imagen publicada ya lo trae (se construye con
-el commit del tag), así que con ella `/api/health` responde
-`"commitVerified":true` sin hacer nada. Si construyes desde el código, pásalo
-como build arg `SOURCE_COMMIT` en cada despliegue. Con docker compose,
-`docker compose build --build-arg SOURCE_COMMIT=$(git rev-parse HEAD)` y
-luego `docker compose up -d --pull never` (sin `--build`, que reconstruiría
-sin él, y sin descargar la imagen publicada en lugar de la tuya); en Coolify o
-en cualquier otra plataforma, que el valor llegue como build arg
-`SOURCE_COMMIT`, no solo como variable de entorno. Así queda dentro del
-binario y sale con `"commitVerified":true`.
+O número da versão vem de `package.json` e é fixado na **compilação**. O commit
+só é incluído se for fornecido **durante o build**. A imagem publicada já o contém (é compilada com
+o commit da tag), então, com ela, `/api/health` retorna
+`"commitVerified":true` sem nenhuma configuração adicional. Se você compilar a partir do código, informe-o
+como argumento de build `SOURCE_COMMIT` em cada implantação. Com docker compose,
+`docker compose build --build-arg SOURCE_COMMIT=$(git rev-parse HEAD)` e
+depois `docker compose up -d --pull never` (sem `--build`, que recompilaria
+sem ele, e sem baixar a imagem publicada em vez da sua); no Coolify ou
+em qualquer outra plataforma, o valor deve ser fornecido como argumento de build
+`SOURCE_COMMIT`, não apenas como variável de ambiente. Assim, ele é incluído no
+binário e aparece como `"commitVerified":true`.
 
-Si el build no lo trajo, la app enseña el `SOURCE_COMMIT` que encuentre en el
-entorno al arrancar, pero **no lo da por bueno**: en la barra lateral aparece
-como «commit sin verificar» y en el healthcheck con `"commitVerified":false`.
-Es lo que dice la plataforma, no el código, y solo es cierto si ella lo
-actualiza en cada despliegue. Una variable escrita a mano una vez se queda
-quieta mientras la app avanza debajo, y la insignia mostraría un commit que ya
-no corre: una variable fija es peor que dejarla vacía. Sin commit por ningún
-lado se ve solo la versión. Si un script compara commits para confirmar un
-despliegue, que exija `commitVerified: true`.
+Se o build não o incluir, o app exibirá o `SOURCE_COMMIT` encontrado no
+ambiente durante a inicialização, mas **não o considerará confiável**: na barra lateral, aparecerá
+como «commit não verificado» e, no healthcheck, como `"commitVerified":false`.
+Esse valor é informado pela plataforma, não pelo código, e só é confiável se ela o
+atualizar em cada implantação. Uma variável preenchida manualmente uma única vez permanece
+inalterada enquanto o app é atualizado, e o selo mostraria um commit que já
+não está em execução: uma variável fixa é pior do que deixá-la vazia. Se nenhum commit for informado,
+somente a versão será exibida. Se um script comparar commits para confirmar uma
+implantação, deve exigir `commitVerified: true`.
 
-SemVer sobre lo que le importa a quien opera una instancia:
+SemVer com foco no que importa para quem opera uma instância:
 
-| | Cuándo sube |
+| | Quando aumenta |
 |---|---|
-| **Mayor** (`2.0.0`) | Hay que hacer algo a mano para actualizar: cambiar una variable de entorno, migrar datos, reconectar algo. |
-| **Menor** (`1.2.0`) | Funciones nuevas. Actualizar es redesplegar. |
-| **Parche** (`1.1.1`) | Arreglos y ajustes. Actualizar es redesplegar. |
+| **Maior** (`2.0.0`) | É necessário fazer algo manualmente para atualizar: alterar uma variável de ambiente, migrar dados, reconectar algo. |
+| **Menor** (`1.2.0`) | Novos recursos. Para atualizar, basta fazer o redeploy. |
+| **Patch** (`1.1.1`) | Correções e ajustes. Para atualizar, basta fazer o redeploy. |
 
-La versión vive en `package.json` y se sube en el PR que publica el cambio,
-junto con el default de `VOCERO_CRM_VERSION` en `docker-compose.yml` y la
-etiqueta de la imagen en `render.yaml`, `fly.toml` y `railway.toml` (dos
-pruebas exigen que coincidan) y su entrada en [`CHANGELOG.md`](CHANGELOG.md),
-que dice qué trae cada versión y qué hacer para actualizar. Al crear el tag
-`vX.Y.Z`, el CI publica la imagen `ghcr.io/kevinrivm/vocero-crm:X.Y.Z`.
+A versão fica em `package.json` e é atualizada no PR que publica a alteração,
+junto com o valor padrão de `VOCERO_CRM_VERSION` em `docker-compose.yml`, a
+tag da imagem em `render.yaml`, `fly.toml` e `railway.toml` (dois
+testes exigem que sejam iguais) e sua entrada em [`CHANGELOG.md`](CHANGELOG.md),
+que descreve o conteúdo de cada versão e como atualizar. Ao criar a tag
+`vX.Y.Z`, o CI publica a imagem `ghcr.io/kevinrivm/vocero-crm:X.Y.Z`.
 
 ## Roadmap
 
-Las versiones 1.5 y 2.0 tienen plan propio:
+As versões 1.5 e 2.0 têm um plano próprio:
 [docs/plan-1.5-y-2.0.md](docs/plan-1.5-y-2.0.md).
 
-- Adjuntos en Instagram, Messenger y TikTok (hoy esos canales son de texto; en
-  WhatsApp ya van y vienen con vista previa).
-- RAG para knowledge bases grandes (hoy: se inyecta completo con aviso de tamaño).
-- Personas configurables del Laboratorio y comparativas entre corridas.
-- Borrado de plantillas desde la app.
-- Métricas de plantillas (las de ventas, origen y conversaciones ya están en
+- Anexos no Instagram, Messenger e TikTok (atualmente, esses canais aceitam texto; no
+  WhatsApp, os anexos já são enviados e recebidos com pré-visualização).
+- RAG para bases de conhecimento grandes (atualmente, o conteúdo é injetado por inteiro, com aviso sobre o tamanho).
+- Personas configuráveis do Laboratório e comparação entre execuções.
+- Exclusão de modelos pelo app.
+- Métricas de modelos (as de vendas, origem e conversas já estão em
   Resultados).
-- Broadcast con opt-in verificado.
+- Broadcast com opt-in verificado.
 
-### Antes fuera de alcance, ahora detrás de una bandera
+### Antes fora do escopo; agora atrás de uma flag
 
-**El motor de agendamiento ya está en el core**, apagado por defecto. Aquí
-decía que quedaba fuera a propósito, con dos razones. Las dos eran buenas y
-las dos cambiaron; se dejan escritas porque el porqué importa más que la
-conclusión:
+**O mecanismo de agendamento já faz parte do core**, desativado por padrão. Antes,
+esta seção dizia que ele ficaria fora de propósito, por dois motivos. Ambos eram válidos e
+ambos mudaram; eles são mantidos aqui porque as razões importam mais do que a
+conclusão:
 
-- *"Son mil líneas y una dependencia de fechas en un proyecto cuyo argumento es
-  ser ligero."* — Cierto, y por eso vive detrás de `AGENDA`: una instancia que
-  no agenda no ve pantallas, ni rutas, ni una instrucción de agendar en el
-  prompt de su agente, ni se le pide una sola credencial. El peso lo paga quien
-  la enciende. Lo de la dependencia de fechas ya no aplica: el motor no agregó
-  ninguna (la aritmética de zonas usa `Intl` de la plataforma).
-- *"El estado de qué huecos se ofrecieron pertenece a la conversación, o sea al
-  agente, no al CRM."* — Pertenecía al agente mientras el CRM no ofreciera la
-  garantía. Al ofrecerla, es el CRM quien tiene que poder probarla: con la
-  memoria del lado del cliente, cualquier cerebro conectado por `/api/bot/*`
-  podría reservar un horario que jamás se ofreció y el CRM lo aceptaría. Ahora
-  la regla es inviolable por construcción y vale igual para Nea, para tu bot y
-  para el que venga.
+- *"São mil linhas e uma dependência de datas em um projeto cujo argumento é
+  ser leve."* — É verdade, e por isso o recurso fica atrás de `AGENDA`: uma instância que
+  não agenda não vê telas, rotas nem instruções de agendamento no
+  prompt do agente, e não precisa fornecer nenhuma credencial. O custo fica para quem
+  ativa o recurso. A questão da dependência de datas não se aplica mais: o mecanismo não adicionou
+  nenhuma (os cálculos de fuso usam `Intl` da plataforma).
+- *"O estado dos horários oferecidos pertence à conversa, ou seja, ao
+  agente, não ao CRM."* — Pertencia ao agente enquanto o CRM não oferecia essa
+  garantia. Ao oferecê-la, é o CRM que precisa poder comprová-la: com a
+  memória no lado do cliente, qualquer cérebro conectado por `/api/bot/*`
+  poderia reservar um horário que nunca foi oferecido, e o CRM aceitaria. Agora,
+  a regra é inviolável por construção e vale igualmente para o Nea, para seu bot e
+  para qualquer outro.
 
-Lo que sigue fuera, y a propósito: **leer calendarios externos** para descontar
-disponibilidad. El motor calcula con lo suyo y los compromisos de fuera se
-reflejan con bloqueos manuales; meter al proveedor en ese camino acoplaría su
-latencia y sus caídas a la pantalla que más se usa.
+O que continua fora do escopo, de propósito: **ler calendários externos** para descontar
+disponibilidade. O mecanismo calcula com os próprios dados, e compromissos externos são
+registrados com bloqueios manuais; incluir o provedor nesse fluxo acoplaria a
+latência e as falhas dele à tela mais usada.
 
 ## Stack
 
-Next.js 15 (App Router) + React 19 · TypeScript estricto · PostgreSQL +
-Drizzle ORM · Better Auth · Tailwind CSS · SSE (sin WebSockets) · Docker
-multi-stage con migraciones al arranque. Diseñado para que una agencia lo
-modifique con un asistente de IA: specs y decisiones de diseño en
-[`specs/`](specs/), guía de modificación en [`AGENTS.md`](AGENTS.md) (y lo específico de Claude Code en [`CLAUDE.md`](CLAUDE.md)).
+Next.js 15 (App Router) + React 19 · TypeScript estrito · PostgreSQL +
+Drizzle ORM · Better Auth · Tailwind CSS · SSE (sem WebSockets) · Docker
+multi-stage com migrações na inicialização. Projetado para que uma agência possa modificá-lo
+com um assistente de IA: specs e decisões de projeto em
+[`specs/`](specs/), guia de modificações em [`AGENTS.md`](AGENTS.md) (e instruções específicas do Claude Code em [`CLAUDE.md`](CLAUDE.md)).
 
-## Licencia
+## Licença
 
-[MIT](LICENSE) — úsalo, véndelo instalado, modifícalo. Si te sirve, una ⭐ al
-repo ayuda a que más gente lo encuentre.
+[MIT](LICENSE) — use, venda instalado, modifique. Se for útil para você, uma ⭐ no
+repositório ajuda mais pessoas a encontrá-lo.
 
 ## Créditos
 
-Creado por [Kevin Belier](https://www.youtube.com/@KevinBelier). ¿Quieres
-aprender a convertirte en Meta Tech Provider y monetizar con tu agencia de IA?
-Únete a la [VIBE Community](https://www.skool.com/vibe-community-vip). Los patrones
-de producción (webhook firmado, ingesta idempotente, cifrado de tokens) vienen
-de un proyecto de referencia privado en producción, portados y simplificados
-para este repo.
+Criado por [Kevin Belier](https://www.youtube.com/@KevinBelier). Quer
+aprender a se tornar Meta Tech Provider e monetizar sua agência de IA?
+Participe da [VIBE Community](https://www.skool.com/vibe-community-vip). Os padrões
+de produção (webhook assinado, ingestão idempotente, criptografia de tokens) vêm
+de um projeto de referência privado em produção, portados e simplificados
+para este repositório.
